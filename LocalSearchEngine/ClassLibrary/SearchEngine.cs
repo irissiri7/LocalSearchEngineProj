@@ -18,7 +18,7 @@ namespace ClassLibrary
             //Outer loop runs until user choose 'Exit'
             while (true)
             {
-                bool processingFiles = true;
+                var processingFiles = true;
                 GiveOptions();
                 
                 //Inner loop runs until user chooses to restart program
@@ -52,7 +52,7 @@ namespace ClassLibrary
         private void ProcessSelection(ref bool processingFiles)
         {
             Console.Write(">>");
-            string input = Console.ReadLine();
+            var input = Console.ReadLine();
             switch (input)
             {
                 case "1":
@@ -108,7 +108,7 @@ namespace ClassLibrary
         private void ProcessExitSelection()
         {
             Console.WriteLine("Bye bye");
-            System.Environment.Exit(0);
+            Environment.Exit(0);
         }
     }
 }
