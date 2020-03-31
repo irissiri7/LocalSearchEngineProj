@@ -1,13 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Text;
+
+[assembly: InternalsVisibleTo("TestProject")]
 
 namespace ClassLibrary
 {
     public class SearchEngine
     {
         //PROPERTIES
-        private List<TxtFile> Files { get; set; } = new List<TxtFile>();
+        public List<TxtFile> Files { get; private set; } = new List<TxtFile>();
+        private string Format { get; set; } = ".txt";
 
 
         //METHODS
@@ -20,7 +24,7 @@ namespace ClassLibrary
             {
                 bool processingFiles = true;
                 GiveOptions();
-                
+
                 //Inner loop runs until user chooses to restart program
                 while (processingFiles)
                 {
@@ -47,7 +51,7 @@ namespace ClassLibrary
             Console.WriteLine("[4] Restart");
             Console.WriteLine("[5] Exit");
         }
-        
+
         //This method is continously called in the program loop (see Start() method) until the user chooses to 'Exit' the program.
         private void ProcessSelection(ref bool processingFiles)
         {
@@ -75,18 +79,100 @@ namespace ClassLibrary
                     break;
             }
         }
-        
-        //This method will ask user to submit file path(s).
+
+        //This method will ask user to submitt files
         private void AskForFilePaths()
         {
-            Console.WriteLine("Not implemented");
+            Console.WriteLine("Submit one or more filepath(s). Submitt one filepath at a time, submitt by pressing 'Enter'");
+            Console.WriteLine("When you are done, press 'p' to proceed");
+
+            while (true)
+            {
+                Console.Write(">>");
+                string input = Console.ReadLine().ToLower();
+                switch (input)
+                {
+                    case "p":
+                        if (CheckIfProceedIsPossible())
+                        {
+                            UpdateFilesSubmitted();
+                            GiveOptions();
+                            return;
+                        }
+                        break;
+                    default:
+                        TryAddFile(input, out string message);
+                        Console.WriteLine(message);
+                        break;
+                }
+
+            }
+        }
+
+        //This method will try to add a new file to Files list, returning a 
+        //bool for if the attenpt was successfull or not
+        internal bool TryAddFile(string input, out string message)
+        {
+            bool result = false;
+            if (FilePathVerifier.CheckIfValidFilepath(input, Format, out message))
+            {
+                if (!CheckIfFileIsAlreadyInList(input))
+                {
+                    Files.Add(new TxtFile(input));
+                    result = true;
+                }
+                else
+                {
+                    message = "File is already added. Can not add duplicates.";
+                }
+            }
+
+            return result;
+        }
+
+        //Checks wheather a file is already added to the SearchEngine
+        private bool CheckIfFileIsAlreadyInList(string filePath)
+        {
+            bool fileAlreadyInList = false;
+            foreach (var f in Files)
+            {
+                if (f.FilePath == filePath)
+                {
+                    fileAlreadyInList = true;
+                }
+            }
+
+            return fileAlreadyInList;
+        }
+
+        //This method makes sure files are submitted before proceeding
+        private bool CheckIfProceedIsPossible()
+        {
+            bool result = false;
+
+            if (Files.Count > 0)
+            {
+                result = true;
+            }
+            else
+            {
+                Console.WriteLine("You haven't submitted any valid files yet and can't proceed");
+            }
+
+            return result;
+        }
+
+        //This method informs user how many valid files that are currently submitted to the SearchEngine
+        private void UpdateFilesSubmitted()
+        {
+            Console.WriteLine($"You have currently submitted {Files.Count} valid file(s)");
         }
 
         //This method will restart the program, also removing previously submitted files and starting fresh
         private void ProcessRestartSelection(ref bool processingFiles)
         {
             processingFiles = false;
-            
+
             //Wiping the Files list, starting fresh
             Files = new List<TxtFile>();
             Console.WriteLine("Restarting the program");
