@@ -22,7 +22,8 @@ namespace ClassLibrary
         //METHODS
         public string SortWords()
         {
-            return "Not implemented";
+            Console.WriteLine("Hej");
+            return "Not implemented ";
         }
 
         public string Search(string word)
@@ -35,4 +36,5 @@ namespace ClassLibrary
             Console.WriteLine("Not implemented");
         }
     }
+
 }
