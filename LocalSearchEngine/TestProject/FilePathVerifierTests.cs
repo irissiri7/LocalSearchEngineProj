@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using ClassLibrary;
-
+using System.IO;
 
 namespace TestProject
 {
@@ -12,7 +9,9 @@ namespace TestProject
         [Test]
         public void CheckIfValidFilePath_HappyDays_ReturnsTrueAndCorrectMessage()
         {
-            bool result = FilePathVerifier.CheckIfValidFilepath(@"C:\Users\91lydnil\source\repos\LocalSearchEngineProj\LocalSearchEngine\TestProject\ExampleFiles\ValidTxtFile.txt", ".txt", out string message);
+            string dir = Directory.GetCurrentDirectory();
+            var fullPath = Path.Combine(dir, @"ExampleFiles\ValidTxtFile.txt");
+            bool result = FilePathVerifier.CheckIfValidFilepath(fullPath, ".txt", out string message);
             Assert.IsTrue(result);
             Assert.AreEqual("File added", message);
         }
@@ -20,7 +19,9 @@ namespace TestProject
         [Test]
         public void CheckIfValidFilePath_FileDoesNotExist_ReturnsFalseAndCorrectMessage()
         {
-            bool result = FilePathVerifier.CheckIfValidFilepath(@"C:\Users\91lydnil\source\repos\LocalSearchEngineProj\LocalSearchEngine\TestProject\ExampleFiles\IDoNotExistFile.txt", ".txt", out string message);
+            string dir = Directory.GetCurrentDirectory();
+            var fullPath = Path.Combine(dir, @"ExampleFiles\IDoNotExistFile.txt");
+            bool result = FilePathVerifier.CheckIfValidFilepath(fullPath, ".txt", out string message);
             Assert.IsFalse(result);
             Assert.AreEqual("File does not exist", message);
         }
@@ -28,9 +29,12 @@ namespace TestProject
         [Test]
         public void CheckIfValidFilePath_FileIsWrongFormat_ReturnsFalseAndCorrectMessage()
         {
-            bool result = FilePathVerifier.CheckIfValidFilepath(@"C:\Users\91lydnil\source\repos\LocalSearchEngineProj\LocalSearchEngine\TestProject\ExampleFiles\NotValidTxtFile.xml", ".txt", out string message);
+            string dir = Directory.GetCurrentDirectory();
+            var fullPath = Path.Combine(dir, @"ExampleFiles\NotValidTxtFile.xml");
+            bool result = FilePathVerifier.CheckIfValidFilepath(fullPath, ".txt", out string message);
             Assert.False(result);
             Assert.AreEqual("File not in right format. Can only process .txt files", message);
         }
+
     }
 }
