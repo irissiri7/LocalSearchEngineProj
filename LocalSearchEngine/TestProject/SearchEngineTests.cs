@@ -6,6 +6,7 @@ using ClassLibrary;
 
 namespace TestProject
 {
+    [TestFixture]
     class SearchEngineTests
     {
         [Test]

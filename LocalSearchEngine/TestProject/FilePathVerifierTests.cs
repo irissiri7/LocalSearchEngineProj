@@ -4,6 +4,7 @@ using System.IO;
 
 namespace TestProject
 {
+    [TestFixture]
     public class FilePathVerifierTests
     {
         [Test]

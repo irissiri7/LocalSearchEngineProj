@@ -27,9 +27,30 @@ namespace ClassLibrary
             return "Not implemented";
         }
 
-        public string Search(string word)
+        public int Search(string searchWword)
         {
-            return "Not implemented";
+
+            // temporary load file until proper load function is in place
+            var str = "";
+            using (var file = new StreamReader(FilePath))
+            {
+                var line = "";
+                while ((line = file.ReadLine()) != null)
+                {
+                    str += line;
+                }
+            }
+            var count = 0;
+            var arr = file.ToLower().Split(" ");
+            foreach (string word in arr)
+            {
+                if (word == searchWword)
+                {
+                    count++;
+                }
+            }
+
+            return count;
         }
 
         public void Save(string text)
