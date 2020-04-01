@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using NUnit.Framework;
 using ClassLibrary;
+using System.IO;
 
 namespace TestProject
 {
@@ -29,21 +30,22 @@ namespace TestProject
             actual.Add("a");
             SortingAlgoritm.HeapSort<string>(actual);
 
-
             Assert.AreEqual(expected, actual);
         }
         [Test]
         public void Test_ValidTxtCount()
         {
             int count = 21;
-            string filepath = @"C:\Users\maxtauru\Documents\GitHub\LocalSearchEngineProj\LocalSearchEngine\TestProject\ExampleFiles\ValidTxtFile.txt"; //Hi my name is Baloo and i live in the djungle. Yesterday I met a new friend, his name is Mowgli. SHOULD HAVE 21 WORDS!
-            var actual = new TxtFile(filepath);
+            string dir = Directory.GetCurrentDirectory();
+            var fullpath = Path.Combine(dir, @"ExampleFiles\ValidTxtFile.txt"); //Hi my name is Baloo and i live in the djungle. Yesterday I met a new friend, his name is Mowgli.
+            var actual = new TxtFile(fullpath);
             Assert.AreEqual(count, actual.Words.Count);
         }
         [Test]
         public void Test_SortedTextFile()
         {
-            string filepath = @"C:\Users\maxtauru\Documents\GitHub\LocalSearchEngineProj\LocalSearchEngine\TestProject\ExampleFiles\ValidTxtFile.txt"; //Hi my name is Baloo and i live in the djungle. Yesterday I met a new friend, his name is Mowgli.
+            string dir = Directory.GetCurrentDirectory();
+            var fullpath = Path.Combine(dir, @"ExampleFiles\ValidTxtFile.txt"); //Hi my name is Baloo and i live in the djungle. Yesterday I met a new friend, his name is Mowgli.
             var expected = new List<string>();
             expected.Add("a");
             expected.Add("and");
@@ -67,20 +69,18 @@ namespace TestProject
             expected.Add("the");
             expected.Add("yesterday");
 
-            var actual = new TxtFile(filepath);
+            var actual = new TxtFile(fullpath);
             actual.SortWords();
             Assert.AreEqual(expected, actual.SortedTxtFile);
         }
         [Test]
         public void TestSaveASSorted()
         {
-            string filepath = @"C:\Users\maxtauru\Documents\GitHub\LocalSearchEngineProj\LocalSearchEngine\TestProject\ExampleFiles\ValidTxtFile.txt";
-
-            var result = new TxtFile(filepath);
+            string dir = Directory.GetCurrentDirectory();
+            var fullpath = Path.Combine(dir, @"ExampleFiles\ValidTxtFile.txt");
+            var result = new TxtFile(fullpath);
             result.SortWords();
             result.SaveSortedFile();
         }
-
-
     }
 }

@@ -16,4 +16,10 @@
       <ProjectReference Include="..\ClassLibrary\ClassLibrary.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <None Update="ExampleFiles\ValidTxtFile.txt">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
+
 </Project>
