@@ -50,10 +50,10 @@ namespace ClassLibrary
         }
         private void GetWords()
         {
-            char[] charsToAvoid = { '?', '!', ' ', ',', '.', ':', ';', '\t' };
+            char[] charsToAvoid = { '?', '!', ' ', ',', '.', ':', ';', '\t','\r','\n' };
             using (StreamReader sr = new StreamReader(FilePath))
             {
-                string words = sr.ReadLine();
+                string words = sr.ReadToEnd();
                 string[] split = words.Split(" ");
 
                 foreach (string s in split)
