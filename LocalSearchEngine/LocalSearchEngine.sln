@@ -5,9 +5,9 @@ VisualStudioVersion = 16.0.29905.134
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LocalSearchEngine", "LocalSearchEngine\LocalSearchEngine.csproj", "{E43D894A-B327-4CA2-92AB-EB1EC73A7DBC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClassLibrary", "ClassLibrary\ClassLibrary.csproj", "{4C82BFCB-2C5C-44A4-9CC9-A197331AEE7E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ClassLibrary", "ClassLibrary\ClassLibrary.csproj", "{4C82BFCB-2C5C-44A4-9CC9-A197331AEE7E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestProject", "TestProject\TestProject.csproj", "{FDF33A90-A04E-443D-A767-158C2CBC7073}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestProject", "TestProject\TestProject.csproj", "{FDF33A90-A04E-443D-A767-158C2CBC7073}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

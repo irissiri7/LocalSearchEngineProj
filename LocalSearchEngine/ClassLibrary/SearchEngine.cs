@@ -11,6 +11,8 @@ namespace ClassLibrary
     {
         //PROPERTIES
         public List<TxtFile> Files { get; private set; } = new List<TxtFile>();
+        public List<List<TxtFile>> SortedFiles { get; private set; } = new List<List<TxtFile>>();
+
         private string Format { get; set; } = ".txt";
 
 
@@ -45,9 +47,9 @@ namespace ClassLibrary
         private void GiveOptions()
         {
             Console.WriteLine("Choose an option:");
-            Console.WriteLine("[1] Submitt file(s)");
+            Console.WriteLine("[1] Submit file(s)");
             Console.WriteLine("[2] Search for word");
-            Console.WriteLine("[3] Sort document");
+            Console.WriteLine("[3] Sort document(s)");
             Console.WriteLine("[4] Restart");
             Console.WriteLine("[5] Exit");
         }
@@ -83,8 +85,9 @@ namespace ClassLibrary
         //This method will ask user to submitt files
         private void AskForFilePaths()
         {
-            Console.WriteLine("Submit one or more filepath(s). Submitt one filepath at a time, submitt by pressing 'Enter'");
-            Console.WriteLine("When you are done, press 'p' to proceed");
+            Console.Clear();
+            Console.WriteLine("Submit one or more filepath(s). Submit one filepath at a time, submitt by pressing 'Enter'");
+            Console.WriteLine("When you are done, press 'p' and enter to proceed");
 
             while (true)
             {
@@ -165,6 +168,7 @@ namespace ClassLibrary
         //This method informs user how many valid files that are currently submitted to the SearchEngine
         private void UpdateFilesSubmitted()
         {
+            Console.Clear();
             Console.WriteLine($"You have currently submitted {Files.Count} valid file(s)");
         }
 
@@ -175,7 +179,8 @@ namespace ClassLibrary
 
             //Wiping the Files list, starting fresh
             Files = new List<TxtFile>();
-            Console.WriteLine("Restarting the program");
+            Console.Clear();
+            Console.WriteLine("Program restarted and all submitted documents were erased succesfully!");
         }
 
         //Processing Search option
@@ -185,11 +190,69 @@ namespace ClassLibrary
         }
 
         //Processing Sort selection
-        private void ProcessSortSelection()
+        private void ProcessSortSelection() //Sorts all submitted files
         {
-            Console.WriteLine("Sort not implemented");
+            if (Files.Count > 0)
+            {
+                foreach (TxtFile files in Files) //TAR ALLA SUBMITTADE FILER.
+                {
+                    files.SortWords();
+                    Console.WriteLine($"{files.FilePath} sorted!");
+                }
+                Console.WriteLine("Want to save files?");
+                Console.WriteLine("1. Yes");
+                Console.WriteLine("2. No (return to main menu)");
+                switch (Console.ReadKey().Key)                    //Vill du spara?
+                {
+                    case ConsoleKey.D1:
+                        {
+                            ProcessSaveAllFiles();
+                        }
+                        break;
+
+                    case ConsoleKey.D2:
+                        {
+                            Console.Clear();
+                            GiveOptions();
+                            break;
+                        }
+                }
+            }
+            else
+            {
+                Console.Clear();
+                Console.WriteLine("You didn't submit any files");
+                GiveOptions();
+            }
+            
+
+            
+        }
+        private void ProcessSaveAllFiles()
+        {
+
+            Console.Clear();
+            if (Files.Count > 0)
+            {
+                foreach (TxtFile files in Files)
+                {
+                    files.SaveSortedFile();
+                    Console.WriteLine($"{files.FilePath} saved!");
+                }
+                GiveOptions();                                       
+
+            }
+            else
+            {
+                Console.Clear();
+                Console.WriteLine("Can't save since you had no submitted files");
+                GiveOptions();
+            }
+
         }
 
+
+        
         //'Exit' program
         private void ProcessExitSelection()
         {

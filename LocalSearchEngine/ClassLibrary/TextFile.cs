@@ -8,17 +8,18 @@ using System.Text.RegularExpressions;
 namespace ClassLibrary
 {
     //This class will represent the .txt files the user wants to work with
-    public class TxtFile
+    public class TxtFile //C:/Users/maxtauru/Desktop/Sample.txt
     {
-        private List<string> wordList = new List<string>();
+
         //PROPERTIES
         public string FilePath { get; private set; }
+        public List<string> SortedTxtFile { get; private set; } = new List<string>();
         public List<String> Words
         {
             get { return wordList; }
             set { wordList = value; }
         }
-
+        private List<string> wordList = new List<string>();
         //CONSTRUCTOR
         public TxtFile(string filePath)
         {
@@ -27,31 +28,39 @@ namespace ClassLibrary
         }
 
         //METHODS
-        private static List<string> SortWords(TxtFile txtFile) //returns a TxtFile sorted
+        public void SortWords() //returns a TxtFile sorted or returns all words as a list
         {
-            List<string> sortedList = new List<string>();
-            foreach (string s in txtFile.Words)
+            foreach (string s in this.Words)
             {
-                sortedList.Add(s);
+                SortedTxtFile.Add(s);
             }
-            sortedList.Sort();                                   //Implementera egen metod
+            SortingAlgoritm.HeapSort<string>(SortedTxtFile);         //Samma sak fast min metod
+            /*sortedList.Sort();       */                         //Implementera egen metod
 
-            return sortedList;
+        }
+        public void SaveSortedFile () //Saves the file as a {Filepath}_SortedWords.txt
+        {
+            string directory = Path.GetDirectoryName(FilePath);
+            string fileName = Path.GetFileNameWithoutExtension(FilePath);
+            string extension = Path.GetExtension(FilePath);
+
+            string newPath = Path.Combine(directory, string.Concat(fileName, "_SortedWords", extension));
+
+            File.WriteAllLines(newPath, SortedTxtFile);
         }
         private void GetWords()
         {
-
             char[] charsToAvoid = { '?', '!', ' ', ',', '.', ':', ';', '\t' };
             using (StreamReader sr = new StreamReader(FilePath))
             {
                 string words = sr.ReadLine();
-                string[] split = words.Split(charsToAvoid);
+                string[] split = words.Split(" ");
+
                 foreach (string s in split)
                 {
-                    wordList.Add(s);
+                    Words.Add(s.Trim(charsToAvoid).ToLower());
                 }
             }
-
         }
         public void WriteAllWords_ToConsole()
         {
