@@ -12,11 +12,13 @@ namespace ClassLibrary
     {
         //PROPERTIES
         public string FilePath { get; private set; }
+        private List<string> Words { get; set; } = new List<string>();
 
         //CONSTRUCTOR
         public TxtFile(string filePath)
         {
             FilePath = filePath;
+            GetWords();
         }
 
         //METHODS
@@ -33,6 +35,21 @@ namespace ClassLibrary
         public void Save(string text)
         {
             Console.WriteLine("Not implemented");
+        }
+
+        private void GetWords()
+        {
+            char[] charsToAvoid = { '?', '!', ' ', ',', '.', ':', ';', '\t' };
+            using (StreamReader sr = new StreamReader(FilePath))
+            {
+                string words = sr.ReadLine();
+                string[] split = words.Split(" ");
+                
+                foreach (string s in split)
+                {
+                    Words.Add(s.Trim(charsToAvoid).ToLower());
+                }
+            }
         }
     }
 }
