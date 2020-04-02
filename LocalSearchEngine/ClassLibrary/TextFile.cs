@@ -8,11 +8,13 @@ using System.Text.RegularExpressions;
 namespace ClassLibrary
 {
     //This class will represent the .txt files the user wants to work with
-    public class TxtFile
+    public class TxtFile //C:/Users/maxtauru/Desktop/Sample.txt
     {
+
         //PROPERTIES
         public string FilePath { get; private set; }
-        public List<string> Words { get; set; } = new List<string>();
+        public List<string> SortedTxtFile { get; private set; } = new List<string>();
+        public List<String> Words { get; private set; } = new List<String>();
 
         //CONSTRUCTOR
         public TxtFile(string filePath)
@@ -22,9 +24,15 @@ namespace ClassLibrary
         }
 
         //METHODS
-        public string SortWords()
+        public void SortWords() //returns a TxtFile sorted or returns all words as a list
         {
-            return "Not implemented";
+            foreach (string s in this.Words)
+            {
+                SortedTxtFile.Add(s);
+            }
+            SortingAlgoritm.HeapSort<string>(SortedTxtFile);         //Samma sak fast min metod
+            /*sortedList.Sort();       */                         //Implementera egen metod
+
         }
 
         public int Search(string searchWord)
@@ -36,19 +44,25 @@ namespace ClassLibrary
             }
             return Words.Count(word => word == searchWord);
         }
-
-        public void Save(string text)
+        public void SaveSortedFile () //Saves the file as a {Filepath}_SortedWords.txt
         {
-            Console.WriteLine("Not implemented");
-        }
+            string directory = Path.GetDirectoryName(FilePath);
+            string fileName = Path.GetFileNameWithoutExtension(FilePath);
+            string extension = Path.GetExtension(FilePath);
 
+            string newPath = Path.Combine(directory, string.Concat(fileName, "_SortedWords", extension));
+
+            File.WriteAllLines(newPath, SortedTxtFile);
+        }
         private void GetWords()
         {
-            char[] charsToAvoid = { '?', '!', ' ', ',', '.', ':', ';', '\t' };
+            char[] charsToAvoid = { '?', '!', ' ', ',', '.', ':', ';', '\t','\r','\n' };
             using (StreamReader sr = new StreamReader(FilePath))
             {
-                string line;
-                while ((line = sr.ReadLine()) != null)
+                string words = sr.ReadToEnd();
+                string[] split = words.Split(" ");
+
+                foreach (string s in split)
                 {
 
                     var split = line.Split(" ");
@@ -60,5 +74,20 @@ namespace ClassLibrary
                 }
             }
         }
+        public void WriteAllWords_ToConsole()
+        {
+            foreach (string s in this.Words)
+            {
+                Console.WriteLine(s);
+            }
+        }
+
+        public void Save(string text)
+        {
+            Console.WriteLine("Not implemented");
+        }
+
+
     }
+
 }
