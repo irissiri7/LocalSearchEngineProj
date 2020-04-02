@@ -24,7 +24,7 @@ namespace ClassLibrary
             //Outer loop runs until user choose 'Exit'
             while (true)
             {
-                bool processingFiles = true;
+                var processingFiles = true;
                 GiveOptions();
 
                 //Inner loop runs until user chooses to restart program
@@ -58,7 +58,7 @@ namespace ClassLibrary
         private void ProcessSelection(ref bool processingFiles)
         {
             Console.Write(">>");
-            string input = Console.ReadLine();
+            var input = Console.ReadLine();
             switch (input)
             {
                 case "1":
@@ -186,7 +186,38 @@ namespace ClassLibrary
         //Processing Search option
         private void ProcessSearchSelection()
         {
-            Console.WriteLine("Search not implemented");
+            if (Files.Count == 0)
+            {
+                Console.WriteLine("Please add files before searching");
+                return;
+            }
+            Console.WriteLine("Please Enter a Search Word");
+            Console.Write(">>");
+            var input = Console.ReadLine();
+            var hits = Search(input, out string filePath);
+            Console.Write("Max Hits: ");
+            Console.WriteLine(hits);
+            Console.Write("File: ");
+            Console.WriteLine(filePath);
+            GiveOptions();
+        }
+
+        public int Search(string search, out string filePath)
+        {
+            filePath = "";
+            var maxHits = 0;
+            if (Files.Count == 0) return -1;
+
+            foreach (var file in Files)
+            {
+                var hits = file.Search(search);
+                if (hits >= maxHits)
+                {
+                    maxHits = hits;
+                    filePath = file.FilePath;
+                }
+            }
+            return maxHits;
         }
 
         //Processing Sort selection
@@ -234,7 +265,7 @@ namespace ClassLibrary
             Console.Clear();
             if (Files.Count > 0)
             {
-                foreach (TxtFile files in Files)
+                foreach (var files in Files)
                 {
                     files.SaveSortedFile();
                     Console.WriteLine($"{files.FilePath} saved!");
@@ -257,7 +288,7 @@ namespace ClassLibrary
         private void ProcessExitSelection()
         {
             Console.WriteLine("Bye bye");
-            System.Environment.Exit(0);
+            Environment.Exit(0);
         }
     }
 }
