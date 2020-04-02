@@ -20,6 +20,7 @@ namespace ClassLibrary
             set { wordList = value; }
         }
         private List<string> wordList = new List<string>();
+
         //CONSTRUCTOR
         public TxtFile(string filePath)
         {
@@ -80,6 +81,8 @@ namespace ClassLibrary
         {
             Console.WriteLine("Not implemented");
         }
+
+
     }
 
 }
