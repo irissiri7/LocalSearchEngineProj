@@ -181,7 +181,20 @@ namespace ClassLibrary
         //Processing Search option
         private void ProcessSearchSelection()
         {
-            Console.WriteLine("Search not implemented");
+            if (Files.Count == 0)
+            {
+                Console.WriteLine("Please add files before searching");
+                return;
+            }
+            Console.WriteLine("Please Enter a Search Word");
+            Console.Write(">>");
+            var input = Console.ReadLine();
+            var hits = Search(input, out string filePath);
+            Console.Write("Max Hits: ");
+            Console.WriteLine(hits);
+            Console.Write("File: ");
+            Console.WriteLine(filePath);
+            GiveOptions();
         }
 
         public int Search(string search, out string filePath)
