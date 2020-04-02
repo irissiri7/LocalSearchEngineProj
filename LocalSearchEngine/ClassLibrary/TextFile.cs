@@ -12,7 +12,7 @@ namespace ClassLibrary
     {
         //PROPERTIES
         public string FilePath { get; private set; }
-        private List<string> Words { get; set; } = new List<string>();
+        public List<string> Words { get; set; } = new List<string>();
 
         //CONSTRUCTOR
         public TxtFile(string filePath)
@@ -27,30 +27,14 @@ namespace ClassLibrary
             return "Not implemented";
         }
 
-        public int Search(string searchWword)
+        public int Search(string searchWord)
         {
-
-            // temporary load file until proper load function is in place
-            var str = "";
-            using (var file = new StreamReader(FilePath))
+            var validateSearch = new Regex(@"^[a-zA-Z]+$");
+            if (!validateSearch.IsMatch(searchWord))
             {
-                var line = "";
-                while ((line = file.ReadLine()) != null)
-                {
-                    str += line;
-                }
+                throw new ArgumentException("Invalid Search");
             }
-            var count = 0;
-            var arr = file.ToLower().Split(" ");
-            foreach (string word in arr)
-            {
-                if (word == searchWword)
-                {
-                    count++;
-                }
-            }
-
-            return count;
+            return Words.Count(word => word == searchWord);
         }
 
         public void Save(string text)
@@ -63,12 +47,16 @@ namespace ClassLibrary
             char[] charsToAvoid = { '?', '!', ' ', ',', '.', ':', ';', '\t' };
             using (StreamReader sr = new StreamReader(FilePath))
             {
-                string words = sr.ReadLine();
-                string[] split = words.Split(" ");
-                
-                foreach (string s in split)
+                string line;
+                while ((line = sr.ReadLine()) != null)
                 {
-                    Words.Add(s.Trim(charsToAvoid).ToLower());
+
+                    var split = line.Split(" ");
+
+                    foreach (string s in split)
+                    {
+                        Words.Add(s.Trim(charsToAvoid).ToLower());
+                    }
                 }
             }
         }

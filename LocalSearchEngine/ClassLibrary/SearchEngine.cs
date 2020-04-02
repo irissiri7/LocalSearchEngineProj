@@ -184,6 +184,24 @@ namespace ClassLibrary
             Console.WriteLine("Search not implemented");
         }
 
+        public int Search(string search, out string filePath)
+        {
+            filePath = "";
+            var maxHits = 0;
+            if (Files.Count == 0) return -1;
+
+            foreach (var file in Files)
+            {
+                var hits = file.Search(search);
+                if (hits >= maxHits)
+                {
+                    maxHits = hits;
+                    filePath = file.FilePath;
+                }
+            }
+            return maxHits;
+        }
+
         //Processing Sort selection
         private void ProcessSortSelection()
         {
