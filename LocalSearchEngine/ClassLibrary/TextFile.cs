@@ -44,7 +44,7 @@ namespace ClassLibrary
             }
             return Words.Count(word => word == searchWord);
         }
-        public void SaveSortedFile () //Saves the file as a {Filepath}_SortedWords.txt
+        public void SaveSortedFile() //Saves the file as a {Filepath}_SortedWords.txt
         {
             string directory = Path.GetDirectoryName(FilePath);
             string fileName = Path.GetFileNameWithoutExtension(FilePath);
@@ -56,21 +56,15 @@ namespace ClassLibrary
         }
         private void GetWords()
         {
-            char[] charsToAvoid = { '?', '!', ' ', ',', '.', ':', ';', '\t','\r','\n' };
+            char[] charsToAvoid = { '?', '!', ' ', ',', '.', ':', ';', '\t', '\r', '\n' };
             using (StreamReader sr = new StreamReader(FilePath))
             {
                 string words = sr.ReadToEnd();
-                string[] split = words.Split(" ");
+                var split = words.Split(" ");
 
                 foreach (string s in split)
                 {
-
-                    var split = line.Split(" ");
-
-                    foreach (string s in split)
-                    {
-                        Words.Add(s.Trim(charsToAvoid).ToLower());
-                    }
+                    Words.Add(s.Trim(charsToAvoid).ToLower());
                 }
             }
         }

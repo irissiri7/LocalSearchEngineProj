@@ -265,7 +265,7 @@ namespace ClassLibrary
             Console.Clear();
             if (Files.Count > 0)
             {
-                foreach (TxtFile files in Files)
+                foreach (var files in Files)
                 {
                     files.SaveSortedFile();
                     Console.WriteLine($"{files.FilePath} saved!");
