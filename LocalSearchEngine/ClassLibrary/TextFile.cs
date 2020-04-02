@@ -14,12 +14,7 @@ namespace ClassLibrary
         //PROPERTIES
         public string FilePath { get; private set; }
         public List<string> SortedTxtFile { get; private set; } = new List<string>();
-        public List<String> Words
-        {
-            get { return wordList; }
-            set { wordList = value; }
-        }
-        private List<string> wordList = new List<string>();
+        public List<String> Words { get; private set; } = new List<String>();
 
         //CONSTRUCTOR
         public TxtFile(string filePath)
