@@ -8,18 +8,14 @@ using System.Text.RegularExpressions;
 namespace ClassLibrary
 {
     //This class will represent the .txt files the user wants to work with
-    public class TxtFile //C:/Users/maxtauru/Desktop/Sample.txt
+    public class TxtFile 
     {
 
         //PROPERTIES
         public string FilePath { get; private set; }
         public List<string> SortedTxtFile { get; private set; } = new List<string>();
-        public List<String> Words
-        {
-            get { return wordList; }
-            set { wordList = value; }
-        }
-        private List<string> wordList = new List<string>();
+        public List<String> Words { get; private set; } = new List<string>();
+
 
         //CONSTRUCTOR
         public TxtFile(string filePath)
@@ -29,14 +25,14 @@ namespace ClassLibrary
         }
 
         //METHODS
-        public void SortWords() //returns a TxtFile sorted or returns all words as a list
+        public void SortWords() 
         {
             foreach (string s in this.Words)
             {
                 SortedTxtFile.Add(s);
             }
             SortingAlgoritm.HeapSort<string>(SortedTxtFile);         //Samma sak fast min metod
-            /*sortedList.Sort();       */                         //Implementera egen metod
+
 
         }
         public void SaveSortedFile () //Saves the file as a {Filepath}_SortedWords.txt
@@ -63,14 +59,6 @@ namespace ClassLibrary
                 }
             }
         }
-        public void WriteAllWords_ToConsole()
-        {
-            foreach (string s in this.wordList)
-            {
-                Console.WriteLine(s);
-            }
-        }
-
 
         public string Search(string word)
         {
