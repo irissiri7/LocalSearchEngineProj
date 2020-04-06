@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Text;
-
+using System.IO;
 [assembly: InternalsVisibleTo("TestProject")]
 
 namespace ClassLibrary
@@ -11,9 +11,8 @@ namespace ClassLibrary
     {
         //PROPERTIES
         public List<TxtFile> Files { get; private set; } = new List<TxtFile>();
-        public List<List<TxtFile>> SortedFiles { get; private set; } = new List<List<TxtFile>>();
 
-        private string Format { get; set; } = ".txt";
+
 
 
         //METHODS
@@ -86,7 +85,7 @@ namespace ClassLibrary
         private void AskForFilePaths()
         {
             Console.Clear();
-            Console.WriteLine("Submit one or more filepath(s). Submit one filepath at a time, submitt by pressing 'Enter'");
+            Console.WriteLine("Submit one or more filepath(s). Submit one filepath at a time, submit by pressing 'Enter'");
             Console.WriteLine("When you are done, press 'p' and enter to proceed");
 
             while (true)
@@ -105,6 +104,7 @@ namespace ClassLibrary
                         break;
                     default:
                         TryAddFile(input, out string message);
+                        if(message != null)
                         Console.WriteLine(message);
                         break;
                 }
@@ -117,19 +117,20 @@ namespace ClassLibrary
         internal bool TryAddFile(string input, out string message)
         {
             bool result = false;
-            if (FilePathVerifier.CheckIfValidFilepath(input, Format, out message))
+            if (FilePathVerifier.CheckIfValidFilepath(input, out message))
             {
                 if (!CheckIfFileIsAlreadyInList(input))
                 {
-                    Files.Add(new TxtFile(input));
+                    TxtFile txtFile = new TxtFile(input);
+                    Files.Add(txtFile);
+                    Console.WriteLine($"{Path.GetFileName(txtFile.FilePath)} with {txtFile.Words.Count} words was added");
                     result = true;
                 }
                 else
                 {
-                    message = "File is already added. Can not add duplicates.";
+                    message = $"{input} is already added. Can not add duplicates.";
                 }
             }
-
             return result;
         }
 
@@ -168,8 +169,14 @@ namespace ClassLibrary
         //This method informs user how many valid files that are currently submitted to the SearchEngine
         private void UpdateFilesSubmitted()
         {
+            var totalAmountOfWords = 0;
+            foreach (TxtFile txtFile in Files)
+            {
+                totalAmountOfWords += txtFile.Words.Count;
+            }
             Console.Clear();
             Console.WriteLine($"You have currently submitted {Files.Count} valid file(s)");
+            Console.WriteLine($"You have submitted {totalAmountOfWords} words in total!");
         }
 
         //This method will restart the program, also removing previously submitted files and starting fresh
@@ -228,7 +235,7 @@ namespace ClassLibrary
                 foreach (TxtFile files in Files) //TAR ALLA SUBMITTADE FILER.
                 {
                     files.SortWords();
-                    Console.WriteLine($"{files.FilePath} sorted!");
+                    Console.WriteLine($"{files.FilePath} and {files.Words.Count} sorted!");
                 }
                 Console.WriteLine("Want to save files?");
                 Console.WriteLine("1. Yes");
@@ -255,9 +262,6 @@ namespace ClassLibrary
                 Console.WriteLine("You didn't submit any files");
                 GiveOptions();
             }
-            
-
-            
         }
         private void ProcessSaveAllFiles()
         {
