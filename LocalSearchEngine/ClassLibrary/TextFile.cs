@@ -68,13 +68,6 @@ namespace ClassLibrary
                 }
             }
         }
-        public void WriteAllWords_ToConsole()
-        {
-            foreach (string s in this.Words)
-            {
-                Console.WriteLine(s);
-            }
-        }
 
         public void Save(string text)
         {
