@@ -14,8 +14,7 @@ namespace ClassLibrary
         //PROPERTIES
         public string FilePath { get; private set; }
         public List<string> SortedTxtFile { get; private set; } = new List<string>();
-        public List<String> Words { get; private set; } = new List<string>();
-
+        public List<String> Words { get; private set; } = new List<String>();
 
         //CONSTRUCTOR
         public TxtFile(string filePath)
@@ -35,7 +34,17 @@ namespace ClassLibrary
 
 
         }
-        public void SaveSortedFile () //Saves the file as a {Filepath}_SortedWords.txt
+
+        public int Search(string searchWord)
+        {
+            var validateSearch = new Regex(@"^[a-zA-Z]+$");
+            if (!validateSearch.IsMatch(searchWord))
+            {
+                throw new ArgumentException("Invalid Search");
+            }
+            return Words.Count(word => word == searchWord);
+        }
+        public void SaveSortedFile() //Saves the file as a {Filepath}_SortedWords.txt
         {
             string directory = Path.GetDirectoryName(FilePath);
             string fileName = Path.GetFileNameWithoutExtension(FilePath);
@@ -47,11 +56,11 @@ namespace ClassLibrary
         }
         private void GetWords()
         {
-            char[] charsToAvoid = { '?', '!', ' ', ',', '.', ':', ';', '\t','\r','\n' };
+            char[] charsToAvoid = { '?', '!', ' ', ',', '.', ':', ';', '\t', '\r', '\n' };
             using (StreamReader sr = new StreamReader(FilePath))
             {
                 string words = sr.ReadToEnd();
-                string[] split = words.Split(" ");
+                var split = words.Split(" ");
 
                 foreach (string s in split)
                 {
@@ -59,10 +68,12 @@ namespace ClassLibrary
                 }
             }
         }
-
-        public string Search(string word)
+        public void WriteAllWords_ToConsole()
         {
-            return "Not implemented";
+            foreach (string s in this.Words)
+            {
+                Console.WriteLine(s);
+            }
         }
 
         public void Save(string text)
