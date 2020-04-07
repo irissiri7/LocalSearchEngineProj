@@ -309,6 +309,7 @@ namespace ClassLibrary
         private void ProcessExitSelection()
         {
             Console.WriteLine("Bye bye");
+            Console.ForegroundColor = ConsoleColor.Red;
             Environment.Exit(0);
         }
     }
