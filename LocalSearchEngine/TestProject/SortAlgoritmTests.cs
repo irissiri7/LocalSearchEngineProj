@@ -37,7 +37,7 @@ namespace TestProject
         {
             int count = 21;
             string dir = Directory.GetCurrentDirectory();
-            var fullpath = Path.Combine(dir, @"ExampleFiles\ValidTxtFile.txt"); //Hi my name is Baloo and i live in the djungle. Yesterday I met a new friend, his name is Mowgli.
+            var fullpath = Path.Combine(dir, @"ExampleFiles\ValidTxtFile.txt"); //Hi my name is Baloo and I live in the djungle. Yesterday I met a new friend, his name is Mowgli.
             var actual = new TxtFile(fullpath);
             Assert.AreEqual(count, actual.Words.Count);
         }
@@ -46,28 +46,30 @@ namespace TestProject
         {
             string dir = Directory.GetCurrentDirectory();
             var fullpath = Path.Combine(dir, @"ExampleFiles\ValidTxtFile.txt"); //Hi my name is Baloo and i live in the djungle. Yesterday I met a new friend, his name is Mowgli.
-            var expected = new List<string>();
-            expected.Add("a");
-            expected.Add("and");
-            expected.Add("baloo");
-            expected.Add("djungle");
-            expected.Add("friend");
-            expected.Add("hi");
-            expected.Add("his");
-            expected.Add("i");
-            expected.Add("i");
-            expected.Add("in");
-            expected.Add("is");
-            expected.Add("is");
-            expected.Add("live");
-            expected.Add("met");
-            expected.Add("mowgli");
-            expected.Add("my");
-            expected.Add("name");
-            expected.Add("name");
-            expected.Add("new");
-            expected.Add("the");
-            expected.Add("yesterday");
+            List<string> expected = new List<string>
+            {
+                "a",
+                "and",
+                "baloo",
+                "djungle",
+                "friend",
+                "hi",
+                "his",
+                "i",
+                "i",
+                "in",
+                "is",
+                "is",
+                "live",
+                "met",
+                "mowgli",
+                "my",
+                "name",
+                "name",
+                "new",
+                "the",
+                "yesterday"
+            };
 
             var actual = new TxtFile(fullpath);
             actual.SortWords();

@@ -8,7 +8,7 @@ using System.Text.RegularExpressions;
 namespace ClassLibrary
 {
     //This class will represent the .txt files the user wants to work with
-    public class TxtFile //C:/Users/maxtauru/Desktop/Sample.txt
+    public class TxtFile
     {
 
         //PROPERTIES
@@ -24,20 +24,19 @@ namespace ClassLibrary
         }
 
         //METHODS
-        public void SortWords() //returns a TxtFile sorted or returns all words as a list
+        public void SortWords()
         {
             foreach (string s in this.Words)
             {
                 SortedTxtFile.Add(s);
             }
             SortingAlgoritm.HeapSort<string>(SortedTxtFile);         //Samma sak fast min metod
-            /*sortedList.Sort();       */                         //Implementera egen metod
 
         }
 
         public int Search(string searchWord)
         {
-            var validateSearch = new Regex(@"^[a-zA-Z]+$");
+            var validateSearch = new Regex(@"[a-zA-ZåäöÅÄÖ']+"); //@"^[a-zA-Z]+$"
             if (!validateSearch.IsMatch(searchWord))
             {
                 throw new ArgumentException("Invalid Search");
@@ -83,5 +82,4 @@ namespace ClassLibrary
         }
 
     }
-
 }
