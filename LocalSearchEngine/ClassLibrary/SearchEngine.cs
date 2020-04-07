@@ -250,12 +250,12 @@ namespace ClassLibrary
                 foreach (TxtFile files in Files) //TAR ALLA SUBMITTADE FILER.
                 {
                     files.SortWords();
-                    Console.WriteLine($"{files.FilePath} and {files.Words.Count} sorted!");
+                    Console.WriteLine($"{Path.GetFileName(files.FilePath)} sorted!");
                 }
                 Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine("Want to save files?");
-                Console.WriteLine("1. Yes");
-                Console.WriteLine("2. No (return to main menu)");
+                Console.WriteLine("[1] Yes");
+                Console.WriteLine("Press any other key to return to main menu");
                 Console.ForegroundColor = ConsoleColor.White;
                 switch (Console.ReadKey().Key)                    //Vill du spara?
                 {
@@ -265,7 +265,7 @@ namespace ClassLibrary
                         }
                         break;
 
-                    case ConsoleKey.D2:
+                    default:
                         {
                             Console.Clear();
                             GiveOptions();
@@ -275,8 +275,7 @@ namespace ClassLibrary
             }
             else
             {
-                Console.WriteLine("You haven't submitted any files");
-                GiveOptions();
+                Console.WriteLine("Please add files before sorting");
             }
         }
 

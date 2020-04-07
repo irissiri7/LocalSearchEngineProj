@@ -20,7 +20,7 @@ namespace ClassLibrary
             }
             else if (Path.GetExtension(filePath) != Format)
             {
-                message = $"Invalid format. {filePath} doesn't have a valid format. The only valid filepaths are: {Format}";
+                message = $"Invalid format. Can only process {Format} files";
                 isValid = false;
             }
             return isValid;
