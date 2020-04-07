@@ -134,7 +134,7 @@ namespace ClassLibrary
         }
 
         //Checks wheather a file is already added to the SearchEngine
-        private bool CheckIfFileIsAlreadyInList(string filePath)
+        internal bool CheckIfFileIsAlreadyInList(string filePath)
         {
             bool fileAlreadyInList = false;
             foreach (var f in Files)
@@ -149,7 +149,7 @@ namespace ClassLibrary
         }
 
         //This method makes sure files are submitted before proceeding
-        private bool CheckIfProceedIsPossible()
+        internal bool CheckIfProceedIsPossible()
         {
             bool result = false;
 
@@ -173,7 +173,7 @@ namespace ClassLibrary
         }
 
         //This method will restart the program, also removing previously submitted files and starting fresh
-        private void ProcessRestartSelection(ref bool processingFiles)
+        internal void ProcessRestartSelection(ref bool processingFiles)
         {
             processingFiles = false;
 
