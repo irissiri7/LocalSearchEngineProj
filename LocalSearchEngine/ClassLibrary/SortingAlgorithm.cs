@@ -4,9 +4,10 @@ using System.Text;
 
 namespace ClassLibrary
 {
-    public class SortingAlgoritm
+    public static class SortingAlgorithm
     {
 
+	    // Main sort method
 		public static void HeapSort<T>(List<T> list) where T : IComparable<T>
 		{
 			int heapSize = list.Count;
@@ -21,16 +22,18 @@ namespace ClassLibrary
 			}
 		}
 
+		// Build heap
 		private static void BuildMaxHeap<T>(List<T> list) where T : IComparable<T>
 		{
 			int heapSize = list.Count;
 
-			for (int i = (heapSize / 2) - 1; i >= 0; i--)
+			for (var i = (heapSize / 2) - 1; i >= 0; i--)
 			{
 				Sink(list, heapSize, i);
 			}
 		}
 
+		// Balance heap
 		private static void Sink<T>(List<T> list, int heapSize, int toSinkPos) where T : IComparable<T>
 		{
 			if (GetLeftKidPos(toSinkPos) >= heapSize)
@@ -72,7 +75,8 @@ namespace ClassLibrary
 			}
 
 		}
-
+		
+		// Swaps positions
 		private static void Swap<T>(List<T> list, int pos0, int pos1)
 		{
 			T tmpVal = list[pos0];

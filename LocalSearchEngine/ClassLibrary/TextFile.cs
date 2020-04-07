@@ -7,36 +7,34 @@ using System.Text.RegularExpressions;
 
 namespace ClassLibrary
 {
-    //This class will represent the .txt files the user wants to work with
+    // This class will represent the .txt files the user wants to work with
     public class TxtFile
     {
-
-        //PROPERTIES
+        
         public string FilePath { get; private set; }
         public List<string> WordsSorted { get; private set; } = new List<string>();
         public List<string> WordsUnsorted { get; private set; } = new List<string>();
-
-        //CONSTRUCTOR
+        
         public TxtFile(string filePath)
         {
             FilePath = filePath;
             GetWords();
         }
-
-        //METHODS
+        
+        // Sort method
         public void SortWords()
         {
-            foreach (string s in this.WordsUnsorted)
+            foreach (var word in WordsUnsorted)
             {
-                WordsSorted.Add(s);
+                WordsSorted.Add(word);
             }
-            SortingAlgoritm.HeapSort<string>(WordsSorted);         //Samma sak fast min metod
-
+            SortingAlgorithm.HeapSort<string>(WordsSorted);
         }
 
+        // Search Method
         public int Search(string searchWord)
         {
-            var validateSearch = new Regex(@"[a-zA-ZåäöÅÄÖ']+"); //@"^[a-zA-Z]+$"
+            var validateSearch = new Regex(@"^[a-zA-ZåäöÅÄÖ]+$");
             if (!validateSearch.IsMatch(searchWord))
             {
                 throw new ArgumentException("Invalid Search");
@@ -44,7 +42,8 @@ namespace ClassLibrary
             return WordsUnsorted.Count(word => word == searchWord);
         }
 
-        public void SaveSortedFile() //Saves the file as a {Filepath}_SortedWords.txt
+        // Saves the file as a <Filepath>_SortedWords.txt
+        public string SaveSortedFile() 
         {
             string directory = Path.GetDirectoryName(FilePath);
             string fileName = Path.GetFileNameWithoutExtension(FilePath);
@@ -53,31 +52,22 @@ namespace ClassLibrary
             string newPath = Path.Combine(directory, string.Concat(fileName, "_SortedWords", extension));
 
             File.WriteAllLines(newPath, WordsSorted);
+            return newPath;
         }
 
         private void GetWords()
         {
             char[] charsToAvoid = { '?', '!', ' ', ',', '.', ':', ';', '\t', '\r', '\n', '/' };
-            using (StreamReader sr = new StreamReader(FilePath))
+            using (var sr = new StreamReader(FilePath))
             {
                 string words = sr.ReadToEnd();
                 words = words.Replace("\r\n", " ");
                 var split = words.Split(" ");
                 
-
-                foreach (string s in split)
+                foreach (var item in split)
                 {
-                    WordsUnsorted.Add(s.Trim(charsToAvoid).ToLower());
+                    WordsUnsorted.Add(item.Trim(charsToAvoid).ToLower());
                 }
-            }
-        }
-
-        //Not used anywhere, remove??
-        public void WriteAllWords_ToConsole()
-        {
-            foreach (string s in WordsUnsorted)
-            {
-                Console.WriteLine(s);
             }
         }
 

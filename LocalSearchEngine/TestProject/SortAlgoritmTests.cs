@@ -28,7 +28,7 @@ namespace TestProject
             actual.Add("b");
             actual.Add("c");
             actual.Add("a");
-            SortingAlgoritm.HeapSort<string>(actual);
+            SortingAlgorithm.HeapSort<string>(actual);
 
             Assert.AreEqual(expected, actual);
         }

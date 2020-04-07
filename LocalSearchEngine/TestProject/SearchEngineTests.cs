@@ -19,7 +19,7 @@ namespace TestProject
             string message;
 
             //Act
-            bool couldAddFile = sut.TryAddFile(file, out message);
+            var couldAddFile = sut.TryAddFile(file, out message);
 
             //Assert
             Assert.IsTrue(couldAddFile);
