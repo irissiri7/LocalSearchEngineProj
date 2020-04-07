@@ -36,8 +36,16 @@ namespace ClassLibrary
         private void GiveInstructions()
         {
             Console.ResetColor();
-            Console.WriteLine("Welcome to this tiny little search engine");
-            Console.WriteLine("We can process files of .txt format");
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine(" __    __    ___  _         __   ___   ___ ___    ___ ");
+            Console.WriteLine(@"|  T__T  T  /  _]| T       /  ] /   \ |   T   T  /  _]");
+            Console.WriteLine(@"|  |  |  | /  [_ | |      /  / Y     Y| _   _ | /  [_ ");
+            Console.WriteLine(@"|  |  |  |Y    _]| l___  /  /  |  O  ||  \_/  |Y    _]");
+            Console.WriteLine(@"l  `  '  !|   [_ |     T/   \_ |     ||   |   ||   [_ ");
+            Console.WriteLine(@" \      / |     T|     |\     |l     !|   |   ||     T");
+            Console.WriteLine(@" \_ /\_ / l_____jl_____j \____j \___ / l___j___jl_____j");
+            Console.ResetColor();
+            Console.WriteLine($"We can process files of the following formats: {FilePathVerifier.Format}");
             Console.WriteLine("You can search for words in a document or sort the document alphabetically");
         }
 

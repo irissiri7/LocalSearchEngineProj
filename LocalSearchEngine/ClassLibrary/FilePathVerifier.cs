@@ -6,7 +6,7 @@ namespace ClassLibrary
     public static class FilePathVerifier
     {
 
-        private static string Format { get; set; } = ".txt";
+        public static string Format { get; private set; } = ".txt";
         //Should verify that files exist and is of the right format. It should also give a 'message'
         //depending on the result of the method, for example 'File added', 'File does not exist' or 'File not in right format...'
         public static bool CheckIfValidFilepath(string filePath, out string message)
