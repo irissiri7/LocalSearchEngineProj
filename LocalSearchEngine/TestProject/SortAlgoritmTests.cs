@@ -39,7 +39,7 @@ namespace TestProject
             string dir = Directory.GetCurrentDirectory();
             var fullpath = Path.Combine(dir, @"ExampleFiles\ValidTxtFile.txt"); //Hi my name is Baloo and I live in the djungle. Yesterday I met a new friend, his name is Mowgli.
             var actual = new TxtFile(fullpath);
-            Assert.AreEqual(count, actual.Words.Count);
+            Assert.AreEqual(count, actual.WordsUnsorted.Count);
         }
         [Test]
         public void Test_SortedTextFile()
@@ -73,7 +73,7 @@ namespace TestProject
 
             var actual = new TxtFile(fullpath);
             actual.SortWords();
-            Assert.AreEqual(expected, actual.SortedTxtFile);
+            Assert.AreEqual(expected, actual.WordsSorted);
         }
         [Test]
         public void TestSaveASSorted()

@@ -13,8 +13,8 @@ namespace ClassLibrary
 
         //PROPERTIES
         public string FilePath { get; private set; }
-        public List<string> SortedTxtFile { get; private set; } = new List<string>();
-        public List<String> Words { get; private set; } = new List<String>();
+        public List<string> WordsSorted { get; private set; } = new List<string>();
+        public List<string> WordsUnsorted { get; private set; } = new List<string>();
 
         //CONSTRUCTOR
         public TxtFile(string filePath)
@@ -26,11 +26,11 @@ namespace ClassLibrary
         //METHODS
         public void SortWords()
         {
-            foreach (string s in this.Words)
+            foreach (string s in this.WordsUnsorted)
             {
-                SortedTxtFile.Add(s);
+                WordsSorted.Add(s);
             }
-            SortingAlgoritm.HeapSort<string>(SortedTxtFile);         //Samma sak fast min metod
+            SortingAlgoritm.HeapSort<string>(WordsSorted);         //Samma sak fast min metod
 
         }
 
@@ -41,7 +41,7 @@ namespace ClassLibrary
             {
                 throw new ArgumentException("Invalid Search");
             }
-            return Words.Count(word => word == searchWord);
+            return WordsUnsorted.Count(word => word == searchWord);
         }
 
         public void SaveSortedFile() //Saves the file as a {Filepath}_SortedWords.txt
@@ -52,7 +52,7 @@ namespace ClassLibrary
 
             string newPath = Path.Combine(directory, string.Concat(fileName, "_SortedWords", extension));
 
-            File.WriteAllLines(newPath, SortedTxtFile);
+            File.WriteAllLines(newPath, WordsSorted);
         }
 
         private void GetWords()
@@ -67,7 +67,7 @@ namespace ClassLibrary
 
                 foreach (string s in split)
                 {
-                    Words.Add(s.Trim(charsToAvoid).ToLower());
+                    WordsUnsorted.Add(s.Trim(charsToAvoid).ToLower());
                 }
             }
         }
@@ -75,7 +75,7 @@ namespace ClassLibrary
         //Not used anywhere, remove??
         public void WriteAllWords_ToConsole()
         {
-            foreach (string s in Words)
+            foreach (string s in WordsUnsorted)
             {
                 Console.WriteLine(s);
             }

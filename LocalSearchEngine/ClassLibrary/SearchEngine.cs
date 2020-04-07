@@ -136,7 +136,7 @@ namespace ClassLibrary
                 {
                     TxtFile txtFile = new TxtFile(input);
                     Files.Add(txtFile);
-                    Console.WriteLine($"{Path.GetFileName(txtFile.FilePath)} with {txtFile.Words.Count} words was added");
+                    Console.WriteLine($"{Path.GetFileName(txtFile.FilePath)} with {txtFile.WordsUnsorted.Count} words was added");
                     result = true;
                 }
                 else
@@ -185,7 +185,7 @@ namespace ClassLibrary
             var totalAmountOfWords = 0;
             foreach (TxtFile txtFile in Files)
             {
-                totalAmountOfWords += txtFile.Words.Count;
+                totalAmountOfWords += txtFile.WordsUnsorted.Count;
             }
             Console.Clear();
             Console.WriteLine($"You have currently submitted {Files.Count} valid file(s)");

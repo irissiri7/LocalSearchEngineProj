@@ -14,7 +14,7 @@ namespace TestProject
             var fullPath = Path.Combine(dir, @"ExampleFiles\ValidTxtFile.txt");
             bool result = FilePathVerifier.CheckIfValidFilepath(fullPath, out string message);
             Assert.IsTrue(result);
-            Assert.AreEqual(null, message);
+            Assert.AreEqual("File added", message);
         }
 
         [Test]
@@ -34,7 +34,7 @@ namespace TestProject
             var fullPath = Path.Combine(dir, @"ExampleFiles\NotValidTxtFile.xml");
             bool result = FilePathVerifier.CheckIfValidFilepath(fullPath, out string message);
             Assert.False(result);
-            Assert.AreEqual($"Invalid format. {fullPath} doesn't have a valid format. The only valid filepaths are: .txt", message);
+            Assert.AreEqual($"Invalid format. Can only process .txt files", message);
         }
 
     }

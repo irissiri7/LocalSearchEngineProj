@@ -12,7 +12,7 @@ namespace ClassLibrary
         public static bool CheckIfValidFilepath(string filePath, out string message)
         {
             bool isValid = true;
-            message = null;
+            message = "File added";
             if (!File.Exists(filePath))
             {
                 isValid = false;
