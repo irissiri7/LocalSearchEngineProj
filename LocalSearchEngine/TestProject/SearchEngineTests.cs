@@ -88,7 +88,7 @@ namespace TestProject
         }
 
         [Test]
-        public void CheckIfProceedIsPossible_FileAreNotAdded_ReturnsFalse()
+        public void CheckIfProceedIsPossible_FilesAreNotAdded_ReturnsFalse()
         {
             //Arrange
             var sut = new SearchEngine();
