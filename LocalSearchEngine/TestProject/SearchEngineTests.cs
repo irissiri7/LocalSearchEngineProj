@@ -24,7 +24,7 @@ namespace TestProject
             //Assert
             Assert.IsTrue(couldAddFile);
             Assert.AreEqual(1, sut.Files.Count);
-            Assert.AreEqual("File added", message);
+            Assert.AreEqual(null, message);
 
         }
 
@@ -43,7 +43,7 @@ namespace TestProject
             //Assert
             Assert.IsFalse(couldAddFile);
             Assert.AreEqual(1, sut.Files.Count);
-            Assert.AreEqual("File is already added. Can not add duplicates.", message);
+            Assert.AreEqual($"ValidTxtFile.txt is already added. Can not add duplicates.", message);
         }
 
         [Test]

@@ -13,8 +13,6 @@ namespace ClassLibrary
         public List<TxtFile> Files { get; private set; } = new List<TxtFile>();
 
 
-
-
         //METHODS
         //This methods starts the program and keeps it in a loop until the user activly chooses to 'Exit'.
         public void Start()
@@ -37,6 +35,7 @@ namespace ClassLibrary
         //Giving initial instructions
         private void GiveInstructions()
         {
+            Console.ResetColor();
             Console.WriteLine("Welcome to this tiny little search engine");
             Console.WriteLine("We can process files of .txt format");
             Console.WriteLine("You can search for words in a document or sort the document alphabetically");
@@ -45,6 +44,7 @@ namespace ClassLibrary
         //Giving the user options. This will basically represent the 'main menu' of the program.
         private void GiveOptions()
         {
+            Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("Choose an option:");
             Console.WriteLine("[1] Submit file(s)");
             Console.WriteLine("[2] Search for word");
@@ -56,7 +56,9 @@ namespace ClassLibrary
         //This method is continously called in the program loop (see Start() method) until the user chooses to 'Exit' the program.
         private void ProcessSelection(ref bool processingFiles)
         {
+            Console.ForegroundColor = ConsoleColor.Red;
             Console.Write(">>");
+            Console.ForegroundColor = ConsoleColor.White;
             var input = Console.ReadLine();
             switch (input)
             {
@@ -85,12 +87,15 @@ namespace ClassLibrary
         private void AskForFilePaths()
         {
             Console.Clear();
+            Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("Submit one or more filepath(s). Submit one filepath at a time, submit by pressing 'Enter'");
             Console.WriteLine("When you are done, press 'p' and enter to proceed");
 
             while (true)
             {
+                Console.ForegroundColor = ConsoleColor.Red;
                 Console.Write(">>");
+                Console.ForegroundColor = ConsoleColor.White;
                 string input = Console.ReadLine().ToLower();
                 switch (input)
                 {
@@ -128,7 +133,7 @@ namespace ClassLibrary
                 }
                 else
                 {
-                    message = $"{input} is already added. Can not add duplicates.";
+                    message = $"{Path.GetFileName(input)} is already added. Can not add duplicates.";
                 }
             }
             return result;
@@ -199,11 +204,13 @@ namespace ClassLibrary
                 return;
             }
             Console.WriteLine("Please Enter a Search Word");
+            Console.ForegroundColor = ConsoleColor.Red;
             Console.Write(">>");
+            Console.ForegroundColor = ConsoleColor.White;
             var input = Console.ReadLine();
             var hits = Search(input, out string filePath);
-            Console.Write("Max Hits: ");
-            Console.WriteLine(hits);
+            Console.Clear();
+            Console.Write($"Max Hits:{hits} for the word '{input}' in ");
             Console.Write("File: ");
             Console.WriteLine(filePath);
             GiveOptions();
@@ -237,9 +244,11 @@ namespace ClassLibrary
                     files.SortWords();
                     Console.WriteLine($"{files.FilePath} and {files.Words.Count} sorted!");
                 }
+                Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine("Want to save files?");
                 Console.WriteLine("1. Yes");
                 Console.WriteLine("2. No (return to main menu)");
+                Console.ForegroundColor = ConsoleColor.White;
                 switch (Console.ReadKey().Key)                    //Vill du spara?
                 {
                     case ConsoleKey.D1:

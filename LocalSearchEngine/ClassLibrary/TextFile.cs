@@ -8,7 +8,7 @@ using System.Text.RegularExpressions;
 namespace ClassLibrary
 {
     //This class will represent the .txt files the user wants to work with
-    public class TxtFile 
+    public class TxtFile
     {
 
         //PROPERTIES
@@ -24,7 +24,7 @@ namespace ClassLibrary
         }
 
         //METHODS
-        public void SortWords() 
+        public void SortWords()
         {
             foreach (string s in this.Words)
             {
@@ -32,12 +32,11 @@ namespace ClassLibrary
             }
             SortingAlgoritm.HeapSort<string>(SortedTxtFile);         //Samma sak fast min metod
 
-
         }
 
         public int Search(string searchWord)
         {
-            var validateSearch = new Regex(@"^[a-zA-Z]+$");
+            var validateSearch = new Regex(@"[a-zA-ZåäöÅÄÖ']+"); //@"^[a-zA-Z]+$"
             if (!validateSearch.IsMatch(searchWord))
             {
                 throw new ArgumentException("Invalid Search");
@@ -56,25 +55,21 @@ namespace ClassLibrary
         }
         private void GetWords()
         {
-            char[] charsToAvoid = { '?', '!', ' ', ',', '.', ':', ';', '\t', '\r', '\n' };
-            using (StreamReader sr = new StreamReader(FilePath))
+            Regex regex = new Regex(@"[a-zA-ZåäöÅÄÖ']+");
+            
+            using (StreamReader reader = new StreamReader(FilePath))
             {
-                string words = sr.ReadToEnd();
-                var split = words.Split(" ");
-
-                foreach (string s in split)
+                string words;
+                while((words = reader.ReadLine()) != null)
                 {
-                    Words.Add(s.Trim(charsToAvoid).ToLower());
+                    Match match = regex.Match(words);
+                    while (match.Success)
+                    {
+                        Words.Add(match.Value.ToLower());
+                        match = match.NextMatch();
+                    }
                 }
             }
         }
-
-        public void Save(string text)
-        {
-            Console.WriteLine("Not implemented");
-        }
-
-
     }
-
 }
