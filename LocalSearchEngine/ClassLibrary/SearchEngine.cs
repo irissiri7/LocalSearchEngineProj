@@ -275,8 +275,7 @@ namespace ClassLibrary
             }
             else
             {
-                Console.Clear();
-                Console.WriteLine("You didn't submit any files");
+                Console.WriteLine("You haven't submitted any files");
                 GiveOptions();
             }
         }
