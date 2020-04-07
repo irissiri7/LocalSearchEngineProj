@@ -44,6 +44,7 @@ namespace ClassLibrary
             }
             return Words.Count(word => word == searchWord);
         }
+
         public void SaveSortedFile() //Saves the file as a {Filepath}_SortedWords.txt
         {
             string directory = Path.GetDirectoryName(FilePath);
@@ -54,13 +55,16 @@ namespace ClassLibrary
 
             File.WriteAllLines(newPath, SortedTxtFile);
         }
+
         private void GetWords()
         {
-            char[] charsToAvoid = { '?', '!', ' ', ',', '.', ':', ';', '\t', '\r', '\n' };
+            char[] charsToAvoid = { '?', '!', ' ', ',', '.', ':', ';', '\t', '\r', '\n', '/' };
             using (StreamReader sr = new StreamReader(FilePath))
             {
                 string words = sr.ReadToEnd();
+                words = words.Replace("\r\n", " ");
                 var split = words.Split(" ");
+                
 
                 foreach (string s in split)
                 {
@@ -68,19 +72,15 @@ namespace ClassLibrary
                 }
             }
         }
+
+        //Not used anywhere, remove??
         public void WriteAllWords_ToConsole()
         {
-            foreach (string s in this.Words)
+            foreach (string s in Words)
             {
                 Console.WriteLine(s);
             }
         }
-
-        public void Save(string text)
-        {
-            Console.WriteLine("Not implemented");
-        }
-
 
     }
 

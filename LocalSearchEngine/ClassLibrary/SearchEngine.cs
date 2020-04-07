@@ -259,6 +259,7 @@ namespace ClassLibrary
 
             
         }
+
         private void ProcessSaveAllFiles()
         {
 
@@ -282,8 +283,6 @@ namespace ClassLibrary
 
         }
 
-
-        
         //'Exit' program
         private void ProcessExitSelection()
         {
