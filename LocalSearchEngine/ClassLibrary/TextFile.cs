@@ -7,44 +7,43 @@ using System.Text.RegularExpressions;
 
 namespace ClassLibrary
 {
-    //This class will represent the .txt files the user wants to work with
-    public class TxtFile //C:/Users/maxtauru/Desktop/Sample.txt
+    // This class will represent the .txt files the user wants to work with
+    public class TxtFile
     {
-
-        //PROPERTIES
+        
         public string FilePath { get; private set; }
-        public List<string> SortedTxtFile { get; private set; } = new List<string>();
-        public List<String> Words { get; private set; } = new List<String>();
-
-        //CONSTRUCTOR
+        public List<string> WordsSorted { get; private set; } = new List<string>();
+        public List<string> WordsUnsorted { get; private set; } = new List<string>();
+        
         public TxtFile(string filePath)
         {
             FilePath = filePath;
             GetWords();
         }
-
-        //METHODS
-        public void SortWords() //returns a TxtFile sorted or returns all words as a list
+        
+        // Sort method
+        public void SortWords()
         {
-            foreach (string s in this.Words)
+            foreach (var word in WordsUnsorted)
             {
-                SortedTxtFile.Add(s);
+                WordsSorted.Add(word);
             }
-            SortingAlgoritm.HeapSort<string>(SortedTxtFile);         //Samma sak fast min metod
-            /*sortedList.Sort();       */                         //Implementera egen metod
-
+            SortingAlgorithm.HeapSort<string>(WordsSorted);
         }
 
+        // Search Method
         public int Search(string searchWord)
         {
-            var validateSearch = new Regex(@"^[a-zA-Z]+$");
+            var validateSearch = new Regex(@"^[a-zA-ZåäöÅÄÖ]+$");
             if (!validateSearch.IsMatch(searchWord))
             {
                 throw new ArgumentException("Invalid Search");
             }
-            return Words.Count(word => word == searchWord);
+            return WordsUnsorted.Count(word => word == searchWord);
         }
-        public void SaveSortedFile() //Saves the file as a {Filepath}_SortedWords.txt
+
+        // Saves the file as a <Filepath>_SortedWords.txt
+        public string SaveSortedFile() 
         {
             string directory = Path.GetDirectoryName(FilePath);
             string fileName = Path.GetFileNameWithoutExtension(FilePath);
@@ -52,36 +51,25 @@ namespace ClassLibrary
 
             string newPath = Path.Combine(directory, string.Concat(fileName, "_SortedWords", extension));
 
-            File.WriteAllLines(newPath, SortedTxtFile);
+            File.WriteAllLines(newPath, WordsSorted);
+            return newPath;
         }
+
         private void GetWords()
         {
-            char[] charsToAvoid = { '?', '!', ' ', ',', '.', ':', ';', '\t', '\r', '\n' };
-            using (StreamReader sr = new StreamReader(FilePath))
+            char[] charsToAvoid = { '?', '!', ' ', ',', '.', ':', ';', '\t', '\r', '\n', '/' };
+            using (var sr = new StreamReader(FilePath))
             {
                 string words = sr.ReadToEnd();
+                words = words.Replace("\r\n", " ");
                 var split = words.Split(" ");
-
-                foreach (string s in split)
+                
+                foreach (var item in split)
                 {
-                    Words.Add(s.Trim(charsToAvoid).ToLower());
+                    WordsUnsorted.Add(item.Trim(charsToAvoid).ToLower());
                 }
             }
         }
-        public void WriteAllWords_ToConsole()
-        {
-            foreach (string s in this.Words)
-            {
-                Console.WriteLine(s);
-            }
-        }
-
-        public void Save(string text)
-        {
-            Console.WriteLine("Not implemented");
-        }
-
 
     }
-
 }

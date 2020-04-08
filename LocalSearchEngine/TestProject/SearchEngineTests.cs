@@ -19,7 +19,7 @@ namespace TestProject
             string message;
 
             //Act
-            bool couldAddFile = sut.TryAddFile(file, out message);
+            var couldAddFile = sut.TryAddFile(file, out message);
 
             //Assert
             Assert.IsTrue(couldAddFile);
@@ -43,7 +43,61 @@ namespace TestProject
             //Assert
             Assert.IsFalse(couldAddFile);
             Assert.AreEqual(1, sut.Files.Count);
-            Assert.AreEqual("File is already added. Can not add duplicates.", message);
+            Assert.AreEqual("ValidTxtFile.txt is already added. Can not add duplicates.", message);
+        }
+
+        [Test]
+        public void CheckIfFileIsAlreadyInList_FileIsNotInList_ReturnsFalse()
+        {
+            //Arrange
+            var sut = new SearchEngine();
+            
+            //Act
+            bool fileAlreadyInList = sut.CheckIfFileIsAlreadyInList(@"ExampleFiles\ValidTxtFile.txt");
+
+            //Assert
+            Assert.IsFalse(fileAlreadyInList);
+        }
+
+        [Test]
+        public void CheckIfFileIsAlreadyInList_FileIsAlreadyInList_ReturnsTrue()
+        {
+            //Arrange
+            var sut = new SearchEngine();
+
+            //Act
+            sut.TryAddFile(@"ExampleFiles\ValidTxtFile.txt", out string message);
+            bool fileAlreadyInList = sut.CheckIfFileIsAlreadyInList(@"ExampleFiles\ValidTxtFile.txt");
+
+            //Assert
+            Assert.IsTrue(fileAlreadyInList);
+        }
+
+        [Test]
+        public void CheckIfProceedIsPossible_FileAreAdded_ReturnsTrue()
+        {
+            //Arrange
+            var sut = new SearchEngine();
+
+            //Act
+            sut.TryAddFile(@"ExampleFiles\ValidTxtFile.txt", out string message);
+            bool proceedIsPossible = sut.CheckIfProceedIsPossible();
+
+            //Assert
+            Assert.IsTrue(proceedIsPossible);
+        }
+
+        [Test]
+        public void CheckIfProceedIsPossible_FilesAreNotAdded_ReturnsFalse()
+        {
+            //Arrange
+            var sut = new SearchEngine();
+
+            //Act
+            bool proceedIsPossible = sut.CheckIfProceedIsPossible();
+
+            //Assert
+            Assert.IsFalse(proceedIsPossible);
         }
 
         [Test]

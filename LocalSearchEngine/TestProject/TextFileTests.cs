@@ -15,27 +15,27 @@ namespace TestProject
             var file = new TxtFile(Path.Combine(Directory.GetCurrentDirectory(), @"ExampleFiles\ValidTxtFile.txt"));
 
             // Assert
-            Assert.IsTrue(file.Words.Contains("hi"));
-            Assert.IsTrue(file.Words.Contains("my"));
-            Assert.IsTrue(file.Words.Contains("name"));
-            Assert.IsTrue(file.Words.Contains("is"));
-            Assert.IsTrue(file.Words.Contains("baloo"));
-            Assert.IsTrue(file.Words.Contains("and"));
-            Assert.IsTrue(file.Words.Contains("i"));
-            Assert.IsTrue(file.Words.Contains("live"));
-            Assert.IsTrue(file.Words.Contains("in"));
-            Assert.IsTrue(file.Words.Contains("the"));
-            Assert.IsTrue(file.Words.Contains("djungle"));
-            Assert.IsTrue(file.Words.Contains("yesterday"));
-            Assert.IsTrue(file.Words.Contains("met"));
-            Assert.IsTrue(file.Words.Contains("a"));
-            Assert.IsTrue(file.Words.Contains("new"));
-            Assert.IsTrue(file.Words.Contains("friend"));
-            Assert.IsTrue(file.Words.Contains("his"));
-            Assert.IsTrue(file.Words.Contains("is"));
-            Assert.IsTrue(file.Words.Contains("mowgli"));
-            Assert.IsFalse(file.Words.Contains("."));
-            Assert.IsFalse(file.Words.Contains(","));
+            Assert.IsTrue(file.WordsUnsorted.Contains("hi"));
+            Assert.IsTrue(file.WordsUnsorted.Contains("my"));
+            Assert.IsTrue(file.WordsUnsorted.Contains("name"));
+            Assert.IsTrue(file.WordsUnsorted.Contains("is"));
+            Assert.IsTrue(file.WordsUnsorted.Contains("baloo"));
+            Assert.IsTrue(file.WordsUnsorted.Contains("and"));
+            Assert.IsTrue(file.WordsUnsorted.Contains("i"));
+            Assert.IsTrue(file.WordsUnsorted.Contains("live"));
+            Assert.IsTrue(file.WordsUnsorted.Contains("in"));
+            Assert.IsTrue(file.WordsUnsorted.Contains("the"));
+            Assert.IsTrue(file.WordsUnsorted.Contains("djungle"));
+            Assert.IsTrue(file.WordsUnsorted.Contains("yesterday"));
+            Assert.IsTrue(file.WordsUnsorted.Contains("met"));
+            Assert.IsTrue(file.WordsUnsorted.Contains("a"));
+            Assert.IsTrue(file.WordsUnsorted.Contains("new"));
+            Assert.IsTrue(file.WordsUnsorted.Contains("friend"));
+            Assert.IsTrue(file.WordsUnsorted.Contains("his"));
+            Assert.IsTrue(file.WordsUnsorted.Contains("is"));
+            Assert.IsTrue(file.WordsUnsorted.Contains("mowgli"));
+            Assert.IsFalse(file.WordsUnsorted.Contains("."));
+            Assert.IsFalse(file.WordsUnsorted.Contains(","));
         }
 
         [Test]
