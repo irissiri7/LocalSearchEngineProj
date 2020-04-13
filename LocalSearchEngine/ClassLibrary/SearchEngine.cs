@@ -12,6 +12,7 @@ namespace ClassLibrary
     public class SearchEngine
     {
         public List<TxtFile> Files { get; private set; } = new List<TxtFile>();
+        public bool HasFiles { get => Files.Count > 0; }
 
         // This methods starts the program and keeps it in a loop until the user actively chooses to 'Exit'.
         public void Start()
@@ -93,8 +94,7 @@ namespace ClassLibrary
         {
             Console.Clear();
             Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine(
-                "Submit one or more filepath(s). Submit one filepath at a time, submit by pressing 'Enter'");
+            Console.WriteLine("Submit one or more filepath(s). Submit one filepath at a time, submit by pressing 'Enter'");
             Console.WriteLine("When you are done, press 'p' and enter to proceed");
 
             while (true)
@@ -120,6 +120,7 @@ namespace ClassLibrary
                 }
             }
         }
+
 
         // This method will try to add a new file to Files list, returning a 
         // bool for if the attempt was successful or not
@@ -160,18 +161,6 @@ namespace ClassLibrary
             return fileAlreadyInList;
         }
 
-        // This method makes sure files are submitted before proceeding
-        internal bool CheckIfOptionIsPossible()
-        {
-            if (Files.Count > 0)
-            {
-                return true;
-            }
-
-            Console.WriteLine("You must first submitt files.");
-            return false;
-        }
-
         // This method informs user how many valid files that are currently submitted to the SearchEngine
         private void UpdateFilesSubmitted()
         {
@@ -201,26 +190,24 @@ namespace ClassLibrary
         private void ProcessSearchSelection()
         {
             // If no files are submitted, we will exit method.
-            if (!CheckIfOptionIsPossible())
+            if (HasFiles)
             {
-                return;
+                string input = "";
+                bool firstInput = true;
+
+                while (string.IsNullOrEmpty(input))
+                {
+                    Console.WriteLine("Please Enter a" + (firstInput ? "" : "Valid") + " Search Word");
+                    DisplayPrompt();
+                    input = Console.ReadLine()?.ToLower();
+                    firstInput = false;
+                }
+
+                var result = Search(input);
+                Console.Clear();
+                DisplaySearchResult(result);
+                GiveOptions();
             }
-
-            string input = "";
-            bool firstInput = true;
-
-            while (string.IsNullOrEmpty(input))
-            {
-                Console.WriteLine("Please Enter a" + (firstInput ? "" : "Valid") + " Search Word");
-                DisplayPrompt();
-                input = Console.ReadLine()?.ToLower();
-                firstInput = false;
-            }
-
-            var result = Search(input);
-            Console.Clear();
-            DisplaySearchResult(result);
-            GiveOptions();
         }
 
         private void DisplaySearchResult(List<KeyValuePair<string, int>> list)

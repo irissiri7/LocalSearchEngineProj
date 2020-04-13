@@ -74,33 +74,6 @@ namespace TestProject
         }
 
         [Test]
-        public void CheckIfProceedIsPossible_FileAreAdded_ReturnsTrue()
-        {
-            //Arrange
-            var sut = new SearchEngine();
-
-            //Act
-            sut.TryAddFile(@"ExampleFiles\ValidTxtFile.txt", out string message);
-            bool proceedIsPossible = sut.CheckIfOptionIsPossible();
-
-            //Assert
-            Assert.IsTrue(proceedIsPossible);
-        }
-
-        [Test]
-        public void CheckIfProceedIsPossible_FilesAreNotAdded_ReturnsFalse()
-        {
-            //Arrange
-            var sut = new SearchEngine();
-
-            //Act
-            bool proceedIsPossible = sut.CheckIfOptionIsPossible();
-
-            //Assert
-            Assert.IsFalse(proceedIsPossible);
-        }
-
-        [Test]
         public void Search_OneFile()
         {
             // Arrange
@@ -109,11 +82,12 @@ namespace TestProject
 
             // Act
             sut.Files.Add(file);
-            var maxHits = sut.Search("his", out string filePath);
+            var result = sut.Search("his");
 
             // Assert
-            Assert.AreEqual(file.FilePath, filePath);
-            Assert.AreEqual(1, maxHits);
+            Assert.AreEqual(1, result.Count);
+            Assert.AreEqual(Path.GetFileName(file.FilePath), result[0].Key);
+            Assert.AreEqual(1, result[0].Value);
         }
 
         [Test]
@@ -129,24 +103,13 @@ namespace TestProject
             sut.Files.Add(file1);
             sut.Files.Add(file2);
             sut.Files.Add(file3);
-            var maxHits = sut.Search("his", out string filePath);
+            var result = sut.Search("his");
 
             // Assert
-            Assert.AreEqual(file2.FilePath, filePath);
-            Assert.AreEqual(6, maxHits);
+            Assert.AreEqual(3, result.Count);
+            Assert.AreEqual(Path.GetFileName(file2.FilePath), result[0].Key);
+            Assert.AreEqual(6, result[0].Value);
         }
 
-        [Test]
-        public void Search_NoFiles()
-        {
-            // Arrange
-            var sut = new SearchEngine();
-
-            // Act
-            var maxHits = sut.Search("his", out string filePath);
-
-            // Assert
-            Assert.AreEqual(-1, maxHits);
-        }
     }
 }
