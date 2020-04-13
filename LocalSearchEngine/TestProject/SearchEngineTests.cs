@@ -24,7 +24,7 @@ namespace TestProject
             //Assert
             Assert.IsTrue(couldAddFile);
             Assert.AreEqual(1, sut.Files.Count);
-            Assert.AreEqual("File added", message);
+            Assert.AreEqual(null, message);
 
         }
 

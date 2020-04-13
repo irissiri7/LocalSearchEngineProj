@@ -14,7 +14,7 @@ namespace TestProject
             var fullPath = Path.Combine(dir, @"ExampleFiles\ValidTxtFile.txt");
             bool result = FilePathVerifier.CheckIfValidFilepath(fullPath, out string message);
             Assert.IsTrue(result);
-            Assert.AreEqual("File added", message);
+            Assert.AreEqual(null, message);
         }
 
         [Test]
