@@ -81,7 +81,7 @@ namespace TestProject
 
             //Act
             sut.TryAddFile(@"ExampleFiles\ValidTxtFile.txt", out string message);
-            bool proceedIsPossible = sut.CheckIfProceedIsPossible();
+            bool proceedIsPossible = sut.CheckIfOptionIsPossible();
 
             //Assert
             Assert.IsTrue(proceedIsPossible);
@@ -94,7 +94,7 @@ namespace TestProject
             var sut = new SearchEngine();
 
             //Act
-            bool proceedIsPossible = sut.CheckIfProceedIsPossible();
+            bool proceedIsPossible = sut.CheckIfOptionIsPossible();
 
             //Assert
             Assert.IsFalse(proceedIsPossible);

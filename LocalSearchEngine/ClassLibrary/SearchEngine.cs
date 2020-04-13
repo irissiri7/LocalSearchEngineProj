@@ -161,14 +161,14 @@ namespace ClassLibrary
         }
 
         // This method makes sure files are submitted before proceeding
-        internal bool CheckIfProceedIsPossible()
+        internal bool CheckIfOptionIsPossible()
         {
             if (Files.Count > 0)
             {
                 return true;
             }
 
-            Console.WriteLine("You haven't submitted any valid files yet and can't proceed");
+            Console.WriteLine("You must first submitt files.");
             return false;
         }
 
@@ -200,9 +200,9 @@ namespace ClassLibrary
         // Processing Search option
         private void ProcessSearchSelection()
         {
-            if (Files.Count == 0)
+            // If no files are submitted, we will exit method.
+            if (!CheckIfOptionIsPossible())
             {
-                Console.WriteLine("Please add files before searching");
                 return;
             }
 
@@ -217,27 +217,36 @@ namespace ClassLibrary
                 firstInput = false;
             }
 
-            int hits = Search(input, out string filePath);
+            var result = Search(input);
             Console.Clear();
-            Console.WriteLine($"{hits} hit(s) for the word '{input}' in {Path.GetFileName(filePath)}");
+            DisplaySearchResult(result);
             GiveOptions();
         }
 
-        // Testable Search Method
-        public int Search(string search, out string filePath)
+        private void DisplaySearchResult(List<KeyValuePair<string, int>> list)
         {
-            filePath = "";
-            var maxHits = 0;
-            if (Files.Count == 0) return -1;
+            Console.WriteLine("Search Result:");
+            foreach(var item in list)
+            {
+                Console.WriteLine($"File: {item.Key}");
+                Console.WriteLine($"Occurance: {item.Value} times");
+                Console.WriteLine();
+            }
+        }
 
+        // Testable Search Method
+        public List<KeyValuePair<string, int>> Search(string search)
+        {
+            var result = new List<KeyValuePair<string, int>>();
+      
             try
             {
                 foreach (var file in Files)
                 {
+                    string filename = Path.GetFileName(file.FilePath);
                     var hits = file.Search(search);
-                    if (hits < maxHits) continue;
-                    maxHits = hits;
-                    filePath = file.FilePath;
+                    var pair = new KeyValuePair<string, int>(filename, hits);
+                    result.Add(pair);
                 }
             }
             catch (ArgumentException e)
@@ -245,7 +254,10 @@ namespace ClassLibrary
                 Console.WriteLine(e.Message);
             }
 
-            return maxHits;
+            result.Sort((x, y) => (y.Value.CompareTo(x.Value)));
+
+            return result;
+
         }
 
         // Processing Sort selection
