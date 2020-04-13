@@ -109,7 +109,10 @@ namespace ClassLibrary
         }
 
 
-
+        /// <summary>
+        /// These methods are related to the functionality of when user submits file(s)
+        /// </summary>
+        /// 
         private void ProcessSubmitFilesSelection()
         {
             AskForFilePaths();
@@ -172,11 +175,6 @@ namespace ClassLibrary
             return result;
         }
         
-        private void GiveSubmissionInformation(TxtFile file)
-        {
-            Console.WriteLine($"{Path.GetFileName(file.FilePath)} with {file.WordsUnsorted.Count} words was added");
-        }
-
         // Checks weather a file is already added to the SearchEngine
         internal bool CheckIfDuplicate(string filePath)
         {
@@ -190,6 +188,11 @@ namespace ClassLibrary
             }
 
             return fileAlreadyInList;
+        }
+        
+        private void GiveSubmissionInformation(TxtFile file)
+        {
+            Console.WriteLine($"{Path.GetFileName(file.FilePath)} with {file.WordsUnsorted.Count} words was added");
         }
 
         // This method informs user how many valid files and words that are currently submitted to the SearchEngine
@@ -211,7 +214,10 @@ namespace ClassLibrary
         }
 
 
-
+        /// <summary>
+        /// These methods are related to when user wants to search the file(s)
+        /// </summary>
+        /// 
         // Processing Search option
         private void ProcessSearchSelection()
         {
@@ -278,7 +284,10 @@ namespace ClassLibrary
         }
 
 
-
+        /// <summary>
+        /// These methods are related to when the user wants to sort the file(s)
+        /// </summary>
+        /// 
         // Processing Sort selection
         private void ProcessSortSelection()
         {
@@ -346,6 +355,10 @@ namespace ClassLibrary
         
         
 
+        /// <summary>
+        /// Other methods related to the programs progression
+        /// </summary>
+        /// 
         // This method will restart the program, also removing previously submitted files and starting fresh
         private void ProcessRestartSelection(ref bool processingFiles)
         {
@@ -356,8 +369,6 @@ namespace ClassLibrary
             Console.Clear();
             Console.WriteLine("Program restarted and all submitted documents were erased successfully!");
         }
-
-
 
         // Exit program
         private void ProcessExitSelection()
