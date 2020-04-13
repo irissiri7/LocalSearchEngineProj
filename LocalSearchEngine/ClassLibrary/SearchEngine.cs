@@ -63,9 +63,7 @@ namespace ClassLibrary
         // This method is continuously called in the program loop (see Start() method) until the user chooses to 'Exit' the program.
         private void ProcessSelection(ref bool processingFiles)
         {
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.Write(">> ");
-            Console.ForegroundColor = ConsoleColor.White;
+            DisplayPrompt();
             var input = Console.ReadLine();
             switch (input)
             {
@@ -101,9 +99,7 @@ namespace ClassLibrary
 
             while (true)
             {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.Write(">> ");
-                Console.ForegroundColor = ConsoleColor.White;
+                DisplayPrompt();
                 string input = Console.ReadLine()?.ToLower();
                 
                 switch (input)
@@ -216,18 +212,14 @@ namespace ClassLibrary
             while (string.IsNullOrEmpty(input))
             {
                 Console.WriteLine("Please Enter a" + (firstInput ? "" : "Valid") + " Search Word");
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.Write(">> ");
-                Console.ForegroundColor = ConsoleColor.White;
+                DisplayPrompt();
                 input = Console.ReadLine()?.ToLower();
                 firstInput = false;
             }
 
             int hits = Search(input, out string filePath);
             Console.Clear();
-            Console.Write($"{hits} hit(s) for the word '{input}' in ");
-            Console.Write("File: ");
-            Console.WriteLine(filePath);
+            Console.WriteLine($"{hits} hit(s) for the word '{input}' in {Path.GetFileName(filePath)}");
             GiveOptions();
         }
 
@@ -318,6 +310,13 @@ namespace ClassLibrary
             Console.WriteLine("Bye bye");
             Console.ForegroundColor = ConsoleColor.Red;
             Environment.Exit(0);
+        }
+
+        private void DisplayPrompt()
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.Write(">> ");
+            Console.ForegroundColor = ConsoleColor.White;
         }
     }
 }
