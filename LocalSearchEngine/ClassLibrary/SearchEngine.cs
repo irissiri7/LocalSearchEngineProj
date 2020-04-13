@@ -139,13 +139,13 @@ namespace ClassLibrary
                 switch (input)
                 {
                     case "p":
-                        UpdateFilesSubmitted();
+                        DisplayInformationAboutSubmittedFiles();
                         DisplayMainMenu();
                         return;
 
                     default:
                         if (TryAddFile(input, out string message, out TxtFile file))
-                            GiveSubmissionInformation(file);
+                            DisplaySubmissionInformation(file);
                         else
                             Console.WriteLine(message);
                         break;
@@ -190,13 +190,13 @@ namespace ClassLibrary
             return fileAlreadyInList;
         }
         
-        private void GiveSubmissionInformation(TxtFile file)
+        private void DisplaySubmissionInformation(TxtFile file)
         {
             Console.WriteLine($"{Path.GetFileName(file.FilePath)} with {file.WordsUnsorted.Count} words was added");
         }
 
         // This method informs user how many valid files and words that are currently submitted to the SearchEngine
-        private void UpdateFilesSubmitted()
+        private void DisplayInformationAboutSubmittedFiles()
         {
             Console.Clear();
             Console.WriteLine($"You have currently submitted {Files.Count} valid file(s)");
