@@ -15,10 +15,14 @@ namespace ClassLibrary
         public List<TxtFile> Files { get; private set; } = new List<TxtFile>();
         public bool HasFiles { get => Files.Count > 0; }
 
+
+
         public SearchEngine(string desiredFormat)
         {
             Format = desiredFormat;
         }
+
+
 
         // This methods starts the program and keeps it in a loop until the user actively chooses to 'Exit'.
         public void Start()
@@ -28,7 +32,7 @@ namespace ClassLibrary
             while (true)
             {
                 var processingFiles = true;
-                GiveOptions();
+                DisplayMainMenu();
 
                 // Inner loop runs until user chooses to restart program
                 while (processingFiles)
@@ -56,7 +60,7 @@ namespace ClassLibrary
         }
 
         // Giving the user options. This will basically represent the 'main menu' of the program.
-        private void GiveOptions()
+        private void DisplayMainMenu()
         {
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("Choose an option:");
@@ -67,6 +71,15 @@ namespace ClassLibrary
             Console.WriteLine("[5] Exit");
         }
 
+        private void DisplayPrompt()
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.Write(">> ");
+            Console.ForegroundColor = ConsoleColor.White;
+        }
+
+
+
         // This method is continuously called in the program loop (see Start() method) until the user chooses to 'Exit' the program.
         private void ProcessSelection(ref bool processingFiles)
         {
@@ -75,8 +88,7 @@ namespace ClassLibrary
             switch (input)
             {
                 case "1":
-                    AskForFilePaths();
-                    SubmitFilePaths();
+                    ProcessSubmitFilesSelection();
                     break;
                 case "2":
                     ProcessSearchSelection();
@@ -96,6 +108,14 @@ namespace ClassLibrary
             }
         }
 
+
+
+        private void ProcessSubmitFilesSelection()
+        {
+            AskForFilePaths();
+            SubmitFilePaths();
+        }
+        
         // This method will ask user to submit files
         private void AskForFilePaths()
         {
@@ -117,7 +137,7 @@ namespace ClassLibrary
                 {
                     case "p":
                         UpdateFilesSubmitted();
-                        GiveOptions();
+                        DisplayMainMenu();
                         return;
 
                     default:
@@ -128,11 +148,6 @@ namespace ClassLibrary
                         break;
                 }
             }
-        }
-
-        private void GiveSubmissionInformation(TxtFile file)
-        {
-            Console.WriteLine($"{Path.GetFileName(file.FilePath)} with {file.WordsUnsorted.Count} words was added");
         }
 
         // This method will try to add a new file to Files list
@@ -155,6 +170,11 @@ namespace ClassLibrary
             }
 
             return result;
+        }
+        
+        private void GiveSubmissionInformation(TxtFile file)
+        {
+            Console.WriteLine($"{Path.GetFileName(file.FilePath)} with {file.WordsUnsorted.Count} words was added");
         }
 
         // Checks weather a file is already added to the SearchEngine
@@ -190,16 +210,7 @@ namespace ClassLibrary
             return totalAmountOfWords;
         }
 
-        // This method will restart the program, also removing previously submitted files and starting fresh
-        private void ProcessRestartSelection(ref bool processingFiles)
-        {
-            processingFiles = false;
 
-            // Wiping the Files list, starting fresh
-            Files = new List<TxtFile>();
-            Console.Clear();
-            Console.WriteLine("Program restarted and all submitted documents were erased successfully!");
-        }
 
         // Processing Search option
         private void ProcessSearchSelection()
@@ -221,25 +232,14 @@ namespace ClassLibrary
                 var result = Search(input);
                 Console.Clear();
                 DisplaySearchResult(result);
-                GiveOptions();
+                DisplayMainMenu();
             }
             else
             {
                 Console.WriteLine("Please add files before searching");
             }
         }
-
-        private void DisplaySearchResult(List<KeyValuePair<string, int>> list)
-        {
-            Console.WriteLine("Search Result:");
-            foreach(var item in list)
-            {
-                Console.WriteLine($"File: {item.Key}");
-                Console.WriteLine($"Occurance: {item.Value} times");
-                Console.WriteLine();
-            }
-        }
-
+        
         // Testable Search Method
         public List<KeyValuePair<string, int>> Search(string search)
         {
@@ -266,8 +266,21 @@ namespace ClassLibrary
 
         }
 
+        private void DisplaySearchResult(List<KeyValuePair<string, int>> list)
+        {
+            Console.WriteLine("Search Result:");
+            foreach(var item in list)
+            {
+                Console.WriteLine($"File: {item.Key}");
+                Console.WriteLine($"Occurance: {item.Value} times");
+                Console.WriteLine();
+            }
+        }
+
+
+
         // Processing Sort selection
-        private void ProcessSortSelection() // Sorts all submitted files
+        private void ProcessSortSelection()
         {
             if (HasFiles)
             {
@@ -279,7 +292,7 @@ namespace ClassLibrary
                 Console.WriteLine("Please add files before sorting");
             }
         }
-
+        
         private void SortAllFiles()
         {
             foreach (var files in Files)
@@ -288,7 +301,7 @@ namespace ClassLibrary
                 Console.WriteLine($"{Path.GetFileName(files.FilePath)} sorted!");
             }
         }
-
+        
         private void GiveOptionToSaveFiles()
         {
             Console.ForegroundColor = ConsoleColor.Green;
@@ -304,11 +317,11 @@ namespace ClassLibrary
 
                 default:
                     Console.Clear();
-                    GiveOptions();
+                    DisplayMainMenu();
                     break;
             }
         }
-
+        
         // Save all files
         private void SaveAllFiles()
         {
@@ -321,15 +334,30 @@ namespace ClassLibrary
                     Console.WriteLine($"{Path.GetFileName(path)} saved!");
                 }
 
-                GiveOptions();
+                DisplayMainMenu();
             }
             else
             {
                 Console.Clear();
                 Console.WriteLine("Can't save, no files submitted");
-                GiveOptions();
+                DisplayMainMenu();
             }
         }
+        
+        
+
+        // This method will restart the program, also removing previously submitted files and starting fresh
+        private void ProcessRestartSelection(ref bool processingFiles)
+        {
+            processingFiles = false;
+
+            // Wiping the Files list, starting fresh
+            Files = new List<TxtFile>();
+            Console.Clear();
+            Console.WriteLine("Program restarted and all submitted documents were erased successfully!");
+        }
+
+
 
         // Exit program
         private void ProcessExitSelection()
@@ -339,11 +367,6 @@ namespace ClassLibrary
             Environment.Exit(0);
         }
 
-        private void DisplayPrompt()
-        {
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.Write(">> ");
-            Console.ForegroundColor = ConsoleColor.White;
-        }
+
     }
 }
