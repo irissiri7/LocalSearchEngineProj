@@ -105,18 +105,14 @@ namespace ClassLibrary
                 Console.Write(">> ");
                 Console.ForegroundColor = ConsoleColor.White;
                 string input = Console.ReadLine()?.ToLower();
-                Console.WriteLine(input);
+                
                 switch (input)
                 {
                     case "p":
-                        if (CheckIfProceedIsPossible())
-                        {
-                            UpdateFilesSubmitted();
-                            GiveOptions();
-                            return;
-                        }
+                        UpdateFilesSubmitted();
+                        GiveOptions();
+                        return;
 
-                        break;
                     default:
                         TryAddFile(input, out string message);
                         if (message != null)
