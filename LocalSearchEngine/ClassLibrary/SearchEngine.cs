@@ -224,6 +224,10 @@ namespace ClassLibrary
                 DisplaySearchResult(result);
                 GiveOptions();
             }
+            else
+            {
+                Console.WriteLine("Please add files before searching");
+            }
         }
 
         private void DisplaySearchResult(List<KeyValuePair<string, int>> list)

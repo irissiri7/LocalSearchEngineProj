@@ -14,12 +14,11 @@ namespace TestProject
         public void TryAddFile_HappyDays_AddsFile()
         {
             //Arrange
-            var sut = new SearchEngine();
-            var file = Path.Combine(Directory.GetCurrentDirectory(), @"ExampleFiles\ValidTxtFile.txt");
-            string message;
+            var sut = new SearchEngine(".txt");
+            var filePath = Path.Combine(Directory.GetCurrentDirectory(), @"ExampleFiles\ValidTxtFile.txt");
 
             //Act
-            var couldAddFile = sut.TryAddFile(file, out message);
+            var couldAddFile = sut.TryAddFile(filePath, out string message, out TxtFile file);
 
             //Assert
             Assert.IsTrue(couldAddFile);
@@ -32,13 +31,12 @@ namespace TestProject
         public void TryAddFile_GivenDuplicateFile_DoesNotAddFile()
         {
             //Arrange
-            var sut = new SearchEngine();
-            var file = Path.Combine(Directory.GetCurrentDirectory(), @"ExampleFiles\ValidTxtFile.txt");
-            string message;
+            var sut = new SearchEngine(".txt");
+            var filePath = Path.Combine(Directory.GetCurrentDirectory(), @"ExampleFiles\ValidTxtFile.txt");
 
             //Act
-            sut.TryAddFile(file, out message);
-            bool couldAddFile = sut.TryAddFile(file, out message);
+            sut.TryAddFile(filePath, out string message, out TxtFile file);
+            bool couldAddFile = sut.TryAddFile(filePath, out  message, out file);
 
             //Assert
             Assert.IsFalse(couldAddFile);
@@ -50,7 +48,7 @@ namespace TestProject
         public void CheckIfFileIsAlreadyInList_FileIsNotInList_ReturnsFalse()
         {
             //Arrange
-            var sut = new SearchEngine();
+            var sut = new SearchEngine(".txt");
             
             //Act
             bool fileAlreadyInList = sut.CheckIfDuplicate(@"ExampleFiles\ValidTxtFile.txt");
@@ -63,10 +61,10 @@ namespace TestProject
         public void CheckIfFileIsAlreadyInList_FileIsAlreadyInList_ReturnsTrue()
         {
             //Arrange
-            var sut = new SearchEngine();
+            var sut = new SearchEngine(".txt");
 
             //Act
-            sut.TryAddFile(@"ExampleFiles\ValidTxtFile.txt", out string message);
+            sut.TryAddFile(@"ExampleFiles\ValidTxtFile.txt", out string message, out TxtFile file);
             bool fileAlreadyInList = sut.CheckIfDuplicate(@"ExampleFiles\ValidTxtFile.txt");
 
             //Assert
@@ -77,7 +75,7 @@ namespace TestProject
         public void Search_OneFile()
         {
             // Arrange
-            var sut = new SearchEngine();
+            var sut = new SearchEngine(".txt");
             var file = new TxtFile(Path.Combine(Directory.GetCurrentDirectory(), @"ExampleFiles\ValidTxtFile.txt"));
 
             // Act
@@ -94,7 +92,7 @@ namespace TestProject
         public void Search_MultipleFiles()
         {
             // Arrange
-            var sut = new SearchEngine();
+            var sut = new SearchEngine(".txt");
             var file1 = new TxtFile(Path.Combine(Directory.GetCurrentDirectory(), @"ExampleFiles\ValidTxtFile.txt"));
             var file2 = new TxtFile(Path.Combine(Directory.GetCurrentDirectory(), @"ExampleFiles\ValidTxtFile2.txt"));
             var file3 = new TxtFile(Path.Combine(Directory.GetCurrentDirectory(), @"ExampleFiles\ValidTxtFile3.txt"));

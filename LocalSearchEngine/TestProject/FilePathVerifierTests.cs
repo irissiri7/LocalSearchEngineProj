@@ -12,7 +12,7 @@ namespace TestProject
         {
             string dir = Directory.GetCurrentDirectory();
             var fullPath = Path.Combine(dir, @"ExampleFiles\ValidTxtFile.txt");
-            bool result = FilePathVerifier.CheckIfValidFilepath(fullPath, out string message);
+            bool result = FilePathVerifier.CheckIfValidFilepath(fullPath, ".txt", out string message);
             Assert.IsTrue(result);
             Assert.AreEqual(null, message);
         }
@@ -22,7 +22,7 @@ namespace TestProject
         {
             string dir = Directory.GetCurrentDirectory();
             var fullPath = Path.Combine(dir, @"ExampleFiles\IDoNotExistFile.txt");
-            bool result = FilePathVerifier.CheckIfValidFilepath(fullPath, out string message);
+            bool result = FilePathVerifier.CheckIfValidFilepath(fullPath, ".txt", out string message);
             Assert.IsFalse(result);
             Assert.AreEqual("IDoNotExistFile.txt doesn't exist!", message);
         }
@@ -32,7 +32,7 @@ namespace TestProject
         {
             string dir = Directory.GetCurrentDirectory();
             var fullPath = Path.Combine(dir, @"ExampleFiles\NotValidTxtFile.xml");
-            bool result = FilePathVerifier.CheckIfValidFilepath(fullPath, out string message);
+            bool result = FilePathVerifier.CheckIfValidFilepath(fullPath, ".txt", out string message);
             Assert.False(result);
             Assert.AreEqual($"Invalid format. Can only process .txt files", message);
         }
