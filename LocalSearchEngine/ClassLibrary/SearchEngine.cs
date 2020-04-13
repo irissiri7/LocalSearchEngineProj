@@ -27,7 +27,7 @@ namespace ClassLibrary
         // This methods starts the program and keeps it in a loop until the user actively chooses to 'Exit'.
         public void Start()
         {
-            GiveInstructions();
+            DisplayInstructions();
             // Outer loop runs until user choose 'Exit'
             while (true)
             {
@@ -43,7 +43,7 @@ namespace ClassLibrary
         }
 
         // Giving initial instructions
-        private void GiveInstructions()
+        private void DisplayInstructions()
         {
             Console.ResetColor();
             Console.ForegroundColor = ConsoleColor.Red;
