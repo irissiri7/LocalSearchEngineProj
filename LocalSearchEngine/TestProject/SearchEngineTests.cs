@@ -53,7 +53,7 @@ namespace TestProject
             var sut = new SearchEngine();
             
             //Act
-            bool fileAlreadyInList = sut.CheckIfFileIsAlreadyInList(@"ExampleFiles\ValidTxtFile.txt");
+            bool fileAlreadyInList = sut.CheckIfDuplicate(@"ExampleFiles\ValidTxtFile.txt");
 
             //Assert
             Assert.IsFalse(fileAlreadyInList);
@@ -67,7 +67,7 @@ namespace TestProject
 
             //Act
             sut.TryAddFile(@"ExampleFiles\ValidTxtFile.txt", out string message);
-            bool fileAlreadyInList = sut.CheckIfFileIsAlreadyInList(@"ExampleFiles\ValidTxtFile.txt");
+            bool fileAlreadyInList = sut.CheckIfDuplicate(@"ExampleFiles\ValidTxtFile.txt");
 
             //Assert
             Assert.IsTrue(fileAlreadyInList);

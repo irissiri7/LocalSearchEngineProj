@@ -11,8 +11,14 @@ namespace ClassLibrary
 {
     public class SearchEngine
     {
+        public string Format { get; private set; }
         public List<TxtFile> Files { get; private set; } = new List<TxtFile>();
         public bool HasFiles { get => Files.Count > 0; }
+
+        public SearchEngine(string desiredFormat)
+        {
+            Format = desiredFormat;
+        }
 
         // This methods starts the program and keeps it in a loop until the user actively chooses to 'Exit'.
         public void Start()
@@ -45,7 +51,7 @@ namespace ClassLibrary
             Console.WriteLine(@" \      / |     T|     |\     |l     !|   |   ||     T");
             Console.WriteLine(@" \_ /\_ / l_____jl_____j \____j \___ / l___j___jl_____j");
             Console.ResetColor();
-            Console.WriteLine($"We can process files of the following formats: {FilePathVerifier.Format}");
+            Console.WriteLine($"We can process files of the following formats: {Format}");
             Console.WriteLine("You can search for words in a document or sort the document alphabetically");
         }
 
@@ -70,6 +76,7 @@ namespace ClassLibrary
             {
                 case "1":
                     AskForFilePaths();
+                    SubmitFilePaths();
                     break;
                 case "2":
                     ProcessSearchSelection();
@@ -95,8 +102,12 @@ namespace ClassLibrary
             Console.Clear();
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("Submit one or more filepath(s). Submit one filepath at a time, submit by pressing 'Enter'");
-            Console.WriteLine("When you are done, press 'p' and enter to proceed");
+            Console.WriteLine("When you are done, press 'p' to proceed");
+        }
 
+        // This method is responsible for running a loop where user can submit one or several files until user chooses to proceed.
+        private void SubmitFilePaths()
+        {
             while (true)
             {
                 DisplayPrompt();
@@ -110,31 +121,32 @@ namespace ClassLibrary
                         return;
 
                     default:
-                        TryAddFile(input, out string message);
-                        if (message != null)
-                        {
+                        if (TryAddFile(input, out string message, out TxtFile file))
+                            GiveSubmissionInformation(file);
+                        else
                             Console.WriteLine(message);
-                        }
-
                         break;
                 }
             }
         }
 
+        private void GiveSubmissionInformation(TxtFile file)
+        {
+            Console.WriteLine($"{Path.GetFileName(file.FilePath)} with {file.WordsUnsorted.Count} words was added");
+        }
 
         // This method will try to add a new file to Files list, returning a 
         // bool for if the attempt was successful or not
-        internal bool TryAddFile(string input, out string message)
+        internal bool TryAddFile(string input, out string message, out TxtFile file)
         {
             bool result = false;
-            if (FilePathVerifier.CheckIfValidFilepath(input, out message))
+            file = null;
+            if (FilePathVerifier.CheckIfValidFilepath(input, Format, out message))
             {
-                if (!CheckIfFileIsAlreadyInList(input))
+                if (!CheckIfDuplicate(input))
                 {
-                    var txtFile = new TxtFile(input);
-                    Files.Add(txtFile);
-                    Console.WriteLine(
-                        $"{Path.GetFileName(txtFile.FilePath)} with {txtFile.WordsUnsorted.Count} words was added");
+                    file = new TxtFile(input);
+                    Files.Add(file);
                     result = true;
                 }
                 else
@@ -147,7 +159,7 @@ namespace ClassLibrary
         }
 
         // Checks weather a file is already added to the SearchEngine
-        internal bool CheckIfFileIsAlreadyInList(string filePath)
+        internal bool CheckIfDuplicate(string filePath)
         {
             bool fileAlreadyInList = false;
             foreach (var f in Files)
@@ -161,18 +173,22 @@ namespace ClassLibrary
             return fileAlreadyInList;
         }
 
-        // This method informs user how many valid files that are currently submitted to the SearchEngine
+        // This method informs user how many valid files and words that are currently submitted to the SearchEngine
         private void UpdateFilesSubmitted()
+        {
+            Console.Clear();
+            Console.WriteLine($"You have currently submitted {Files.Count} valid file(s)");
+            Console.WriteLine($"You have submitted {CountTotalWordsSubmitted()} words in total!");
+        }
+
+        private int CountTotalWordsSubmitted()
         {
             var totalAmountOfWords = 0;
             foreach (var txtFile in Files)
             {
                 totalAmountOfWords += txtFile.WordsUnsorted.Count;
             }
-
-            Console.Clear();
-            Console.WriteLine($"You have currently submitted {Files.Count} valid file(s)");
-            Console.WriteLine($"You have submitted {totalAmountOfWords} words in total!");
+            return totalAmountOfWords;
         }
 
         // This method will restart the program, also removing previously submitted files and starting fresh
@@ -189,7 +205,7 @@ namespace ClassLibrary
         // Processing Search option
         private void ProcessSearchSelection()
         {
-            // If no files are submitted, we will exit method.
+            // If files are submitted, we proceed
             if (HasFiles)
             {
                 string input = "";
@@ -250,30 +266,10 @@ namespace ClassLibrary
         // Processing Sort selection
         private void ProcessSortSelection() // Sorts all submitted files
         {
-            if (Files.Count > 0)
+            if (HasFiles)
             {
-                foreach (var files in Files)
-                {
-                    files.SortWords();
-                    Console.WriteLine($"{Path.GetFileName(files.FilePath)} sorted!");
-                }
-
-                Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine("Want to save files?");
-                Console.WriteLine("[1] Yes");
-                Console.WriteLine("Press any other key to return to main menu");
-                Console.ForegroundColor = ConsoleColor.White;
-                switch (Console.ReadKey().Key)
-                {
-                    case ConsoleKey.D1:
-                        ProcessSaveAllFiles();
-                        break;
-
-                    default:
-                        Console.Clear();
-                        GiveOptions();
-                        break;
-                }
+                SortAllFiles();
+                GiveOptionToSaveFiles();
             }
             else
             {
@@ -281,11 +277,40 @@ namespace ClassLibrary
             }
         }
 
+        private void SortAllFiles()
+        {
+            foreach (var files in Files)
+            {
+                files.SortWords();
+                Console.WriteLine($"{Path.GetFileName(files.FilePath)} sorted!");
+            }
+        }
+
+        private void GiveOptionToSaveFiles()
+        {
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("Want to save files? [1] Yes");
+            Console.WriteLine("Press any other key to return to main menu");
+            Console.ForegroundColor = ConsoleColor.White;
+            string choice = Console.ReadLine();
+            switch (choice)
+            {
+                case "1":
+                    SaveAllFiles();
+                    break;
+
+                default:
+                    Console.Clear();
+                    GiveOptions();
+                    break;
+            }
+        }
+
         // Save all files
-        private void ProcessSaveAllFiles()
+        private void SaveAllFiles()
         {
             Console.Clear();
-            if (Files.Count > 0)
+            if (HasFiles)
             {
                 foreach (var files in Files)
                 {

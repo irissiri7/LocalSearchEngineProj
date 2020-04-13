@@ -8,7 +8,7 @@ namespace LocalSearchEngine
         //The SearchEngine object is the class responsible for running the actual program and keeping track of the files we are working with.
         static void Main(string[] args)
         {
-            var engine = new SearchEngine();
+            var engine = new SearchEngine(".txt");
             engine.Start();
         }
     }
