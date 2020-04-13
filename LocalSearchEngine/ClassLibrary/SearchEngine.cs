@@ -135,8 +135,7 @@ namespace ClassLibrary
             Console.WriteLine($"{Path.GetFileName(file.FilePath)} with {file.WordsUnsorted.Count} words was added");
         }
 
-        // This method will try to add a new file to Files list, returning a 
-        // bool for if the attempt was successful or not
+        // This method will try to add a new file to Files list
         internal bool TryAddFile(string input, out string message, out TxtFile file)
         {
             bool result = false;
