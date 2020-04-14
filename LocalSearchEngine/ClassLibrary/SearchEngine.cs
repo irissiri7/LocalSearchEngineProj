@@ -233,7 +233,7 @@ namespace ClassLibrary
 
                 var result = Search(input);
                 Console.Clear();
-                DisplaySearchResult(result);
+                DisplaySearchResult(input, result);
                 DisplayMainMenu();
             }
             else
@@ -268,9 +268,10 @@ namespace ClassLibrary
 
         }
 
-        private void DisplaySearchResult(List<KeyValuePair<string, int>> list)
+        private void DisplaySearchResult(string searchWord, List<KeyValuePair<string, int>> list)
         {
-            Console.WriteLine("Search Result:");
+            Console.WriteLine($"You searched for '{searchWord}'.");
+            Console.WriteLine("Here is the result:");
             Console.WriteLine();
             foreach(var item in list)
             {
