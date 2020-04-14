@@ -109,16 +109,15 @@ namespace ClassLibrary
         }
 
 
-        /// <summary>
-        /// These methods are related to the functionality of when user submits file(s)
-        /// </summary>
-        /// 
+        
         private void ProcessSubmitFilesSelection()
         {
             AskForFilePaths();
             SubmitFilePaths();
         }
         
+
+
         // This method will ask user to submit files
         private void AskForFilePaths()
         {
@@ -214,10 +213,7 @@ namespace ClassLibrary
         }
 
 
-        /// <summary>
-        /// These methods are related to when user wants to search the file(s)
-        /// </summary>
-        /// 
+        
         // Processing Search option
         private void ProcessSearchSelection()
         {
@@ -284,10 +280,7 @@ namespace ClassLibrary
         }
 
 
-        /// <summary>
-        /// These methods are related to when the user wants to sort the file(s)
-        /// </summary>
-        /// 
+        
         // Processing Sort selection
         private void ProcessSortSelection()
         {
@@ -354,11 +347,7 @@ namespace ClassLibrary
         }
         
         
-
-        /// <summary>
-        /// Other methods related to the programs progression
-        /// </summary>
-        /// 
+ 
         // This method will restart the program, also removing previously submitted files and starting fresh
         private void ProcessRestartSelection(ref bool processingFiles)
         {
