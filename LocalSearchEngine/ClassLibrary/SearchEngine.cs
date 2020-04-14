@@ -271,6 +271,7 @@ namespace ClassLibrary
         private void DisplaySearchResult(List<KeyValuePair<string, int>> list)
         {
             Console.WriteLine("Search Result:");
+            Console.WriteLine();
             foreach(var item in list)
             {
                 Console.WriteLine($"File: {item.Key}");
