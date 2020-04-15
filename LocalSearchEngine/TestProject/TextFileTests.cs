@@ -115,7 +115,7 @@ namespace TestProject
         }
 
         [Test]
-        public void Search_HappyDays()
+        public void Search_WordIsInFile_ReturnsRightOccurance()
         {
             // Arrange
             var file = new TxtFile(Path.Combine(Directory.GetCurrentDirectory(), @"ExampleFiles\ValidTxtFile.txt"));
@@ -124,14 +124,24 @@ namespace TestProject
             Assert.AreEqual(2, file.Search("i"));
         }
 
-//        [Test]
-//        public void Search_BadInput()
-//        {
-//            // Arrange
-//            var file = new TxtFile(Path.Combine(Environment.CurrentDirectory, @"ExampleFiles\ValidTxtFile.txt"));
-//
-//            // Assert
-//            Assert.Throws<ArgumentException>(() => file.Search("asdas123123%"));
-//        }
+        [Test]
+        public void Search_WordIsNotInFile_ReturnsRightOccurance()
+        {
+            // Arrange
+            var file = new TxtFile(Path.Combine(Directory.GetCurrentDirectory(), @"ExampleFiles\ValidTxtFile.txt"));
+
+            // Assert
+            Assert.AreEqual(0, file.Search("kuckeliku"));
+        }
+
+        //        [Test]
+        //        public void Search_BadInput()
+        //        {
+        //            // Arrange
+        //            var file = new TxtFile(Path.Combine(Environment.CurrentDirectory, @"ExampleFiles\ValidTxtFile.txt"));
+        //
+        //            // Assert
+        //            Assert.Throws<ArgumentException>(() => file.Search("asdas123123%"));
+        //        }
     }
 }
