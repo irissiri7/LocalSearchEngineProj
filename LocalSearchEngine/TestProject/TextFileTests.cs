@@ -7,7 +7,7 @@ namespace TestProject
 {
     public class TextFileTests
     {
-
+        //REGULAR
         [Test]
         public void CreatingNewTxtObj_GivenRegularTxtFile_ReadsInTheWordsCorrectly()
         {
@@ -132,6 +132,34 @@ namespace TestProject
 
             // Assert
             Assert.AreEqual(0, file.Search("kuckeliku"));
+        }
+
+        [Test]
+        public void SaveSortedFile_DoesSaveFile()
+        {
+            var fullpath = Path.Combine(Directory.GetCurrentDirectory(), @"ExampleFiles\ValidTxtFile.txt");
+            var result = new TxtFile(fullpath);
+            result.SortWords();
+            result.SaveSortedFile();
+            bool fileExist = File.Exists(Path.Combine(Directory.GetCurrentDirectory(), @"ExampleFiles\ValidTxtFile_SortedWords.txt"));
+
+            Assert.IsTrue(fileExist);
+        }
+
+
+        //INTEGRATION 
+        //Making sure Search and SortWords do not impact eachother.
+        [Test]
+        public void SearchAndSort_SearchSortThenSearchAgain_SearchResultIsTheSame()
+        {
+            // Arrange
+            var file = new TxtFile(Path.Combine(Directory.GetCurrentDirectory(), @"ExampleFiles\ValidTxtFile.txt"));
+            int searchOne = file.Search("baloo");
+            file.SortWords();
+            int searchTwo = file.Search("baloo");
+
+            // Assert
+            Assert.AreEqual(searchOne, searchTwo);
         }
 
     }
