@@ -69,6 +69,7 @@ namespace ClassLibrary
             Console.WriteLine("[3] Sort document(s)");
             Console.WriteLine("[4] Restart");
             Console.WriteLine("[5] Exit");
+            Console.ForegroundColor = ConsoleColor.White;
         }
 
         private void DisplayPrompt()
