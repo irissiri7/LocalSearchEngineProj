@@ -84,6 +84,37 @@ namespace TestProject
         }
 
         [Test]
+        public void SortWords__SameNumberOfWordsInSortedWordsAndUnsortedWords()
+        {
+            //Arrange
+            var fullpath = Path.Combine(Directory.GetCurrentDirectory(), @"ExampleFiles\ValidTxtFile.txt");
+            var sut = new TxtFile(fullpath);
+
+            //Act
+            sut.SortWords();
+
+            //Assert
+            Assert.AreEqual(sut.WordsSorted.Count, sut.WordsUnsorted.Count);
+        }
+
+        [Test]
+        public void SortWords_SortedWordsAndUnsortedWordsContainTheSameWords()
+        {
+            //Arrange
+            var fullpath = Path.Combine(Directory.GetCurrentDirectory(), @"ExampleFiles\ValidTxtFile.txt");
+            var sut = new TxtFile(fullpath);
+
+            //Act
+            sut.SortWords();
+
+            //Assert
+            foreach(var word in sut.WordsSorted)
+            {
+                Assert.IsTrue(sut.WordsUnsorted.Contains(word));
+            }
+        }
+
+        [Test]
         public void Search_HappyDays()
         {
             // Arrange
