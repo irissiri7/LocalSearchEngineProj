@@ -52,7 +52,7 @@ namespace ClassLibrary
 
         private void GetWords()
         {
-            char[] charsToAvoid = { '?', '!', ' ', ',', '.', ':', ';', '\t', '\r', '\n', '/' };
+            char[] charsToAvoid = { '?', '!', ' ', ',', '.', ':', ';', '\t', '\r', '\n', '/', '-', '"' };
             using (var sr = new StreamReader(FilePath))
             {
                 string words = sr.ReadToEnd();
