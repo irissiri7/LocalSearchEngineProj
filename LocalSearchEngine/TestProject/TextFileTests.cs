@@ -148,7 +148,7 @@ namespace TestProject
 
 
         //INTEGRATION 
-        //Making sure Search and SortWords do not impact eachother.
+        //Making sure Search() and SortWords() do not impact each other.
         [Test]
         public void SearchAndSort_SearchSortThenSearchAgain_SearchResultIsTheSame()
         {

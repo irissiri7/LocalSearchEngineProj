@@ -18,7 +18,7 @@ namespace TestProject
         }
 
         [Test]
-        public void CheckIfValidFilePath_FileDoesNotExist_ReturnsFalseAndCorrectMessage() //$"{Path.GetFileName(filePath)} doesn't exist!";
+        public void CheckIfValidFilePath_FileDoesNotExist_ReturnsFalseAndCorrectMessage()
         {
             string dir = Directory.GetCurrentDirectory();
             var fullPath = Path.Combine(dir, @"ExampleFiles\IDoNotExistFile.txt");
@@ -28,7 +28,7 @@ namespace TestProject
         }
 
         [Test]
-        public void CheckIfValidFilePath_FileIsWrongFormat_ReturnsFalseAndCorrectMessage() //"Invalid format. C:\\Users\\maxtauru\\Documents\\GitHub\\LocalSearchEngineProj\\LocalSearchEngine\\TestProject\\bin\\Debug\\netcoreapp3.1\\ExampleFiles\\NotValidTxtFile.xml doesn't have a valid format. The only valid filepaths are: .txt"
+        public void CheckIfValidFilePath_FileIsWrongFormat_ReturnsFalseAndCorrectMessage()
         {
             string dir = Directory.GetCurrentDirectory();
             var fullPath = Path.Combine(dir, @"ExampleFiles\NotValidTxtFile.xml");
