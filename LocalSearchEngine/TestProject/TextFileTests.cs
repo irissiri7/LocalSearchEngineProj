@@ -9,7 +9,7 @@ namespace TestProject
     {
 
         [Test]
-        public void GetWords_GivenRegularTxtFile_CleansItUpCorrectlyAndAddToWordsUnsorted()
+        public void GetWords_GivenRegularTxtFile_CleansItUpCorrectly()
         {
             // Arrange/Act
             var file = new TxtFile(Path.Combine(Directory.GetCurrentDirectory(), @"ExampleFiles\ValidTxtFile.txt"));
@@ -39,7 +39,7 @@ namespace TestProject
         }
 
         [Test]
-        public void GetWords_GivenMessyTextFile_CleansItUpCorrectlyAndAddToWordsUnsorted()
+        public void GetWords_GivenMessyTextFile_CleansItUpCorrectly()
         {
             // Arrange/Act
              var file = new TxtFile(Path.Combine(Directory.GetCurrentDirectory(), @"ExampleFiles\MessyTxtFile.txt"));
@@ -73,10 +73,12 @@ namespace TestProject
         public void GetWords_GivenTextFile_ExtractsRightNumberOfWords()
         {
             //Arrange
-            var fullpath = Path.Combine(Directory.GetCurrentDirectory(), @"ExampleFiles\ValidTxtFile.txt"); //Hi my name is Baloo and I live in the djungle. Yesterday I met a new friend, his name is Mowgli.
+            var fullpath = Path.Combine(Directory.GetCurrentDirectory(), @"ExampleFiles\ValidTxtFile.txt");
             int numWords = 21;
+            
             //Act
             var sut = new TxtFile(fullpath);
+            
             //Assert
             Assert.AreEqual(numWords, sut.WordsUnsorted.Count);
         }
