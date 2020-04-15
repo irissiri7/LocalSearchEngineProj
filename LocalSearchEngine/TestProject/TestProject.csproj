@@ -32,6 +32,9 @@
     </ItemGroup>
 
     <ItemGroup>
+      <None Update="ExampleFiles\MessyTxtFile.txt">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
       <None Update="ExampleFiles\NotValidTxtFile.xml">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>

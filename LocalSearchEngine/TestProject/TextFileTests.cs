@@ -9,7 +9,7 @@ namespace TestProject
     {
 
         [Test]
-        public void GetWords_HappyDays()
+        public void GetWords_GivenRegularTxtFile_CleansItUpCorrectlyAndAddToWordsUnsorted()
         {
             // Arrange
             var file = new TxtFile(Path.Combine(Directory.GetCurrentDirectory(), @"ExampleFiles\ValidTxtFile.txt"));
@@ -36,6 +36,37 @@ namespace TestProject
             Assert.IsTrue(file.WordsUnsorted.Contains("mowgli"));
             Assert.IsFalse(file.WordsUnsorted.Contains("."));
             Assert.IsFalse(file.WordsUnsorted.Contains(","));
+        }
+
+        [Test]
+        public void GetWords_GivenMessyTextFile_CleansItUpCorrectlyAndAddToWordsUnsorted()
+        {
+            // Arrange
+             var file = new TxtFile(Path.Combine(Directory.GetCurrentDirectory(), @"ExampleFiles\MessyTxtFile.txt"));
+
+            // Assert
+            Assert.IsTrue(file.WordsUnsorted.Contains("all"));
+            Assert.IsTrue(file.WordsUnsorted.Contains("an"));
+            Assert.IsTrue(file.WordsUnsorted.Contains("and"));
+            Assert.IsTrue(file.WordsUnsorted.Contains("awefull"));
+            Assert.IsTrue(file.WordsUnsorted.Contains("be"));
+            Assert.IsTrue(file.WordsUnsorted.Contains("crap"));
+            Assert.IsTrue(file.WordsUnsorted.Contains("crappy"));
+            Assert.IsTrue(file.WordsUnsorted.Contains("gonna"));
+            Assert.IsTrue(file.WordsUnsorted.Contains("is"));
+            Assert.IsTrue(file.WordsUnsorted.Contains("lots"));
+            Assert.IsTrue(file.WordsUnsorted.Contains("mohahahaha"));
+            Assert.IsTrue(file.WordsUnsorted.Contains("of"));
+            Assert.IsTrue(file.WordsUnsorted.Contains("over"));
+            Assert.IsTrue(file.WordsUnsorted.Contains("place"));
+            Assert.IsTrue(file.WordsUnsorted.Contains("spaces"));
+            Assert.IsTrue(file.WordsUnsorted.Contains("tabs"));
+            Assert.IsTrue(file.WordsUnsorted.Contains("text"));
+            Assert.IsTrue(file.WordsUnsorted.Contains("the"));
+            Assert.IsTrue(file.WordsUnsorted.Contains("this"));
+            Assert.IsTrue(file.WordsUnsorted.Contains("with"));
+
+
         }
 
         [Test]
