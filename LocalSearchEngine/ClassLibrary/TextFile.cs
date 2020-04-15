@@ -52,16 +52,17 @@ namespace ClassLibrary
 
         private void GetWords()
         {
-            char[] charsToAvoid = { '?', '!', ' ', ',', '.', ':', ';', '\t', '\r', '\n', '/', '-', '"' };
-            using (var sr = new StreamReader(FilePath))
+            char[] charsToAvoid = { '?', '!', ' ', ',', '.', ':', ';', '/', '-', '"', '(', ')', '{', '}', '[', ']', '#', '*', '%', '+', '`', '=', '&' };
+            string[] text = File.ReadAllLines(FilePath);
+            foreach (string line in text)
             {
-                string words = sr.ReadToEnd();
-                words = words.Replace("\r\n", " ");
-                var split = words.Split(" ");
-                
-                foreach (var item in split)
+                string tabsRemoved = line.Replace("\t", " ");
+                var temp = tabsRemoved.Split(" ");
+                foreach (string t in temp)
                 {
-                    WordsUnsorted.Add(item.Trim(charsToAvoid).ToLower());
+                    string cleanedUp = t.Trim(charsToAvoid).ToLower();
+                    if (cleanedUp != "")
+                        WordsUnsorted.Add(cleanedUp);
                 }
             }
         }
