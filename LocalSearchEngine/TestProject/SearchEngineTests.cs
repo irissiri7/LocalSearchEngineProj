@@ -72,6 +72,22 @@ namespace TestProject
         }
 
         [Test]
+        public void CountTotalWordsSubmitted_ReturnsCorrectNumberOfWords()
+        {
+            //Arrange
+            var sut = new SearchEngine(".txt");
+            var filePathOne = Path.Combine(Directory.GetCurrentDirectory(), @"ExampleFiles\ValidTxtFile.txt");
+            var filePathTwo = Path.Combine(Directory.GetCurrentDirectory(), @"ExampleFiles\MessyTxtFile.txt");
+            
+            //Act
+            sut.TryAddFile(filePathOne, out string message, out TxtFile file);
+            sut.TryAddFile(filePathTwo, out message, out file);
+
+            Assert.AreEqual(41, sut.CountTotalWordsSubmitted());
+
+        }
+
+        [Test]
         public void Search_OneFile()
         {
             // Arrange

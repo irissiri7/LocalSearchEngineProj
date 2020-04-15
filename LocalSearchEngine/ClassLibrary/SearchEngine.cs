@@ -204,7 +204,7 @@ namespace ClassLibrary
             Console.WriteLine($"You have submitted {CountTotalWordsSubmitted()} words in total!");
         }
 
-        private int CountTotalWordsSubmitted()
+        internal int CountTotalWordsSubmitted()
         {
             var totalAmountOfWords = 0;
             foreach (var txtFile in Files)
