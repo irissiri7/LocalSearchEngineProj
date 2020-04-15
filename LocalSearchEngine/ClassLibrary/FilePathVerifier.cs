@@ -6,10 +6,9 @@ namespace ClassLibrary
     public static class FilePathVerifier
     {
 
-        public static string Format { get; } = ".txt";
         // Should verify that files exist and is of the right format. It should also give a 'message'
         // depending on the result of the method, for example 'File added', 'File does not exist' or 'File not in right format...'
-        public static bool CheckIfValidFilepath(string filePath, out string message)
+        public static bool CheckIfValidFilepath(string filePath, string format, out string message)
         {
             message = null;
             if (!File.Exists(filePath))
@@ -17,9 +16,9 @@ namespace ClassLibrary
                 message = $"{Path.GetFileName(filePath)} doesn't exist!";
                 return false;
             }
-            else if (Path.GetExtension(filePath) != Format)
+            else if (Path.GetExtension(filePath) != format)
             {
-                message = $"Invalid format. Can only process {Format} files";
+                message = $"Invalid format. Can only process {format} files";
                 return false;
             }
 

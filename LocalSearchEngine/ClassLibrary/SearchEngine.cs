@@ -12,17 +12,28 @@ namespace ClassLibrary
 {
     public class SearchEngine
     {
+        public string Format { get; private set; }
         public List<TxtFile> Files { get; private set; } = new List<TxtFile>();
+        public bool HasFiles { get => Files.Count > 0; }
+
+
+
+        public SearchEngine(string desiredFormat)
+        {
+            Format = desiredFormat;
+        }
+
+
 
         // This methods starts the program and keeps it in a loop until the user actively chooses to 'Exit'.
         public void Start()
         {
-            GiveInstructions();
+            DisplayInstructions();
             // Outer loop runs until user choose 'Exit'
             while (true)
             {
                 var processingFiles = true;
-                GiveOptions();
+                DisplayMainMenu();
 
                 // Inner loop runs until user chooses to restart program
                 while (processingFiles)
@@ -33,7 +44,7 @@ namespace ClassLibrary
         }
 
         // Giving initial instructions
-        private void GiveInstructions()
+        private void DisplayInstructions()
         {
             Console.ResetColor();
             Console.ForegroundColor = ConsoleColor.Red;
@@ -45,12 +56,12 @@ namespace ClassLibrary
             Console.WriteLine(@" \      / |     T|     |\     |l     !|   |   ||     T");
             Console.WriteLine(@" \_ /\_ / l_____jl_____j \____j \___ / l___j___jl_____j");
             Console.ResetColor();
-            Console.WriteLine($"We can process files of the following formats: {FilePathVerifier.Format}");
+            Console.WriteLine($"We can process files of the following formats: {Format}");
             Console.WriteLine("You can search for words in a document or sort the document alphabetically");
         }
 
         // Giving the user options. This will basically represent the 'main menu' of the program.
-        private void GiveOptions()
+        private void DisplayMainMenu()
         {
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("Choose an option:");
@@ -59,19 +70,27 @@ namespace ClassLibrary
             Console.WriteLine("[3] Sort document(s)");
             Console.WriteLine("[4] Restart");
             Console.WriteLine("[5] Exit");
+            Console.ForegroundColor = ConsoleColor.White;
         }
 
-        // This method is continuously called in the program loop (see Start() method) until the user chooses to 'Exit' the program.
-        private void ProcessSelection(ref bool processingFiles)
+        private void DisplayPrompt()
         {
             Console.ForegroundColor = ConsoleColor.Red;
             Console.Write(">> ");
             Console.ForegroundColor = ConsoleColor.White;
+        }
+
+
+
+        // This method is continuously called in the program loop (see Start() method) until the user chooses to 'Exit' the program.
+        private void ProcessSelection(ref bool processingFiles)
+        {
+            DisplayPrompt();
             var input = Console.ReadLine();
             switch (input)
             {
                 case "1":
-                    AskForFilePaths();
+                    ProcessSubmitFilesSelection();
                     break;
                 case "2":
                     ProcessSearchSelection();
@@ -91,58 +110,61 @@ namespace ClassLibrary
             }
         }
 
+
+        
+        private void ProcessSubmitFilesSelection()
+        {
+            AskForFilePaths();
+            SubmitFilePaths();
+        }
+        
+
+
         // This method will ask user to submit files
         private void AskForFilePaths()
         {
             Console.Clear();
             Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine(
-                "Submit one or more filepath(s). Submit one filepath at a time, submit by pressing 'Enter'");
-            Console.WriteLine("When you are done, press 'p' and enter to proceed");
+            Console.WriteLine("Submit one or more filepath(s). Submit one filepath at a time, submit by pressing 'Enter'");
+            Console.WriteLine("When you are done, press 'p' to proceed");
+        }
 
+        // This method is responsible for running a loop where user can submit one or several files until user chooses to proceed.
+        private void SubmitFilePaths()
+        {
             while (true)
             {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.Write(">> ");
-                Console.ForegroundColor = ConsoleColor.White;
+                DisplayPrompt();
                 string input = Console.ReadLine()?.ToLower();
-                Console.WriteLine(input);
+                
                 switch (input)
                 {
                     case "p":
-                        if (CheckIfProceedIsPossible())
-                        {
-                            UpdateFilesSubmitted();
-                            GiveOptions();
-                            return;
-                        }
+                        DisplayInformationAboutSubmittedFiles();
+                        DisplayMainMenu();
+                        return;
 
-                        break;
                     default:
-                        TryAddFile(input, out string message);
-                        if (message != null)
-                        {
+                        if (TryAddFile(input, out string message, out TxtFile file))
+                            DisplaySubmissionInformation(file);
+                        else
                             Console.WriteLine(message);
-                        }
-
                         break;
                 }
             }
         }
 
-        // This method will try to add a new file to Files list, returning a 
-        // bool for if the attempt was successful or not
-        internal bool TryAddFile(string input, out string message)
+        // This method will try to add a new file to Files list
+        internal bool TryAddFile(string input, out string message, out TxtFile file)
         {
             bool result = false;
-            if (FilePathVerifier.CheckIfValidFilepath(input, out message))
+            file = null;
+            if (FilePathVerifier.CheckIfValidFilepath(input, Format, out message))
             {
-                if (!CheckIfFileIsAlreadyInList(input))
+                if (!CheckIfDuplicate(input))
                 {
-                    var txtFile = new TxtFile(input);
-                    Files.Add(txtFile);
-                    Console.WriteLine(
-                        $"{Path.GetFileName(txtFile.FilePath)} with {txtFile.WordsUnsorted.Count} words was added");
+                    file = new TxtFile(input);
+                    Files.Add(file);
                     result = true;
                 }
                 else
@@ -153,9 +175,9 @@ namespace ClassLibrary
 
             return result;
         }
-
+        
         // Checks weather a file is already added to the SearchEngine
-        internal bool CheckIfFileIsAlreadyInList(string filePath)
+        internal bool CheckIfDuplicate(string filePath)
         {
             bool fileAlreadyInList = false;
             foreach (var f in Files)
@@ -168,33 +190,169 @@ namespace ClassLibrary
 
             return fileAlreadyInList;
         }
-
-        // This method makes sure files are submitted before proceeding
-        internal bool CheckIfProceedIsPossible()
+        
+        private void DisplaySubmissionInformation(TxtFile file)
         {
-            if (Files.Count > 0)
-            {
-                return true;
-            }
-
-            Console.WriteLine("You haven't submitted any valid files yet and can't proceed");
-            return false;
+            Console.WriteLine($"{Path.GetFileName(file.FilePath)} with {file.WordsUnsorted.Count} words was added");
         }
 
-        // This method informs user how many valid files that are currently submitted to the SearchEngine
-        private void UpdateFilesSubmitted()
+        // This method informs user how many valid files and words that are currently submitted to the SearchEngine
+        private void DisplayInformationAboutSubmittedFiles()
+        {
+            Console.Clear();
+            Console.WriteLine($"You have currently submitted {Files.Count} valid file(s)");
+            Console.WriteLine($"You have submitted {CountTotalWordsSubmitted()} words in total!");
+        }
+
+        private int CountTotalWordsSubmitted()
         {
             var totalAmountOfWords = 0;
             foreach (var txtFile in Files)
             {
                 totalAmountOfWords += txtFile.WordsUnsorted.Count;
             }
-
-            Console.Clear();
-            Console.WriteLine($"You have currently submitted {Files.Count} valid file(s)");
-            Console.WriteLine($"You have submitted {totalAmountOfWords} words in total!");
+            return totalAmountOfWords;
         }
 
+
+        
+        // Processing Search option
+        private void ProcessSearchSelection()
+        {
+            // If files are submitted, we proceed
+            if (HasFiles)
+            {
+                string input = "";
+                bool firstInput = true;
+                var validateSearch = new Regex(@"[^a-zA-ZåäöÅÄÖ]+");
+
+                while (string.IsNullOrEmpty(input) || validateSearch.IsMatch(input))
+                {
+                    Console.WriteLine("Please Enter a " + (firstInput ? "" : "Valid") + " Search Word");
+                    DisplayPrompt();
+                    input = Console.ReadLine()?.ToLower();
+                    firstInput = false;
+                }
+
+                var result = Search(input);
+                Console.Clear();
+                DisplaySearchResult(input, result);
+                DisplayMainMenu();
+            }
+            else
+            {
+                Console.WriteLine("Please add files before searching");
+            }
+        }
+        
+        // Testable Search Method
+        public List<KeyValuePair<string, int>> Search(string search)
+        {
+            var result = new List<KeyValuePair<string, int>>();
+      
+            try
+            {
+                foreach (var file in Files)
+                {
+                    string filename = Path.GetFileName(file.FilePath);
+                    var hits = file.Search(search);
+                    var pair = new KeyValuePair<string, int>(filename, hits);
+                    result.Add(pair);
+                }
+            }
+            catch (ArgumentException e)
+            {
+                Console.WriteLine(e.Message);
+            }
+
+            result.Sort((x, y) => (y.Value.CompareTo(x.Value)));
+
+            return result;
+
+        }
+
+        private void DisplaySearchResult(string searchWord, List<KeyValuePair<string, int>> list)
+        {
+            Console.WriteLine($"You searched for '{searchWord}'.");
+            Console.WriteLine("Here is the result:");
+            Console.WriteLine();
+            foreach(var item in list)
+            {
+                Console.WriteLine($"File: {item.Key}");
+                Console.WriteLine($"Occurance: {item.Value} times");
+                Console.WriteLine();
+            }
+        }
+
+
+        
+        // Processing Sort selection
+        private void ProcessSortSelection()
+        {
+            if (HasFiles)
+            {
+                SortAllFiles();
+                GiveOptionToSaveFiles();
+            }
+            else
+            {
+                Console.WriteLine("Please add files before sorting");
+            }
+        }
+        
+        private void SortAllFiles()
+        {
+            foreach (var files in Files)
+            {
+                files.SortWords();
+                Console.WriteLine($"{Path.GetFileName(files.FilePath)} sorted!");
+            }
+        }
+        
+        private void GiveOptionToSaveFiles()
+        {
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("Want to save files? [1] Yes");
+            Console.WriteLine("Press any other key to return to main menu");
+            Console.ForegroundColor = ConsoleColor.White;
+            string choice = Console.ReadLine();
+            switch (choice)
+            {
+                case "1":
+                    SaveAllFiles();
+                    break;
+
+                default:
+                    Console.Clear();
+                    DisplayMainMenu();
+                    break;
+            }
+        }
+        
+        // Save all files
+        private void SaveAllFiles()
+        {
+            Console.Clear();
+            if (HasFiles)
+            {
+                foreach (var files in Files)
+                {
+                    string path = files.SaveSortedFile();
+                    Console.WriteLine($"{Path.GetFileName(path)} saved!");
+                }
+
+                DisplayMainMenu();
+            }
+            else
+            {
+                Console.Clear();
+                Console.WriteLine("Can't save, no files submitted");
+                DisplayMainMenu();
+            }
+        }
+        
+        
+ 
         // This method will restart the program, also removing previously submitted files and starting fresh
         private void ProcessRestartSelection(ref bool processingFiles)
         {
@@ -206,117 +364,6 @@ namespace ClassLibrary
             Console.WriteLine("Program restarted and all submitted documents were erased successfully!");
         }
 
-        // Processing Search option
-        private void ProcessSearchSelection()
-        {
-            if (Files.Count == 0)
-            {
-                Console.WriteLine("Please add files before searching");
-                return;
-            }
-
-            string input = "";
-            bool firstInput = true;
-            var validateSearch = new Regex(@"[^a-zA-ZåäöÅÄÖ]+");
-            while (string.IsNullOrEmpty(input) || validateSearch.IsMatch(input))
-            {
-                Console.WriteLine("Please Enter a " + (firstInput ? "" : "Valid") + " Search Word");
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.Write(">> ");
-                Console.ForegroundColor = ConsoleColor.White;
-                input = Console.ReadLine()?.ToLower();
-                firstInput = false;
-            }
-
-            int hits = Search(input, out string filePath);
-            Console.Clear();
-            Console.Write($"{hits} hit(s) for the word '{input}' in ");
-            Console.Write("File: ");
-            Console.WriteLine(filePath);
-            GiveOptions();
-        }
-
-        // Testable Search Method
-        public int Search(string search, out string filePath)
-        {
-            filePath = "";
-            var maxHits = 0;
-            if (Files.Count == 0) return -1;
-
-            try
-            {
-                foreach (var file in Files)
-                {
-                    var hits = file.Search(search);
-                    if (hits < maxHits) continue;
-                    maxHits = hits;
-                    filePath = file.FilePath;
-                }
-            }
-            catch (ArgumentException e)
-            {
-                Console.WriteLine(e.Message);
-            }
-
-            return maxHits;
-        }
-
-        // Processing Sort selection
-        private void ProcessSortSelection() // Sorts all submitted files
-        {
-            if (Files.Count > 0)
-            {
-                foreach (var files in Files)
-                {
-                    files.SortWords();
-                    Console.WriteLine($"{Path.GetFileName(files.FilePath)} sorted!");
-                }
-
-                Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine("Want to save files?");
-                Console.WriteLine("[1] Yes");
-                Console.WriteLine("Press any other key to return to main menu");
-                Console.ForegroundColor = ConsoleColor.White;
-                switch (Console.ReadKey().Key)
-                {
-                    case ConsoleKey.D1:
-                        ProcessSaveAllFiles();
-                        break;
-
-                    default:
-                        Console.Clear();
-                        GiveOptions();
-                        break;
-                }
-            }
-            else
-            {
-                Console.WriteLine("Please add files before sorting");
-            }
-        }
-
-        // Save all files
-        private void ProcessSaveAllFiles()
-        {
-            Console.Clear();
-            if (Files.Count > 0)
-            {
-                foreach (var files in Files)
-                {
-                    string path = files.SaveSortedFile();
-                    Console.WriteLine($"{Path.GetFileName(path)} saved!");
-                }
-
-                GiveOptions();
-            }
-            else
-            {
-                Console.Clear();
-                Console.WriteLine("Can't save, no files submitted");
-                GiveOptions();
-            }
-        }
-
         // Exit program
         private void ProcessExitSelection()
         {
@@ -324,5 +371,7 @@ namespace ClassLibrary
             Console.ForegroundColor = ConsoleColor.Red;
             Environment.Exit(0);
         }
+
+
     }
 }
