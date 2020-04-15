@@ -11,7 +11,7 @@ namespace TestProject
         [Test]
         public void GetWords_GivenRegularTxtFile_CleansItUpCorrectlyAndAddToWordsUnsorted()
         {
-            // Arrange
+            // Arrange/Act
             var file = new TxtFile(Path.Combine(Directory.GetCurrentDirectory(), @"ExampleFiles\ValidTxtFile.txt"));
 
             // Assert
@@ -41,7 +41,7 @@ namespace TestProject
         [Test]
         public void GetWords_GivenMessyTextFile_CleansItUpCorrectlyAndAddToWordsUnsorted()
         {
-            // Arrange
+            // Arrange/Act
              var file = new TxtFile(Path.Combine(Directory.GetCurrentDirectory(), @"ExampleFiles\MessyTxtFile.txt"));
 
             // Assert
@@ -67,6 +67,18 @@ namespace TestProject
             Assert.IsTrue(file.WordsUnsorted.Contains("with"));
 
 
+        }
+
+        [Test]
+        public void GetWords_GivenTextFile_ExtractsRightNumberOfWords()
+        {
+            //Arrange
+            var fullpath = Path.Combine(Directory.GetCurrentDirectory(), @"ExampleFiles\ValidTxtFile.txt"); //Hi my name is Baloo and I live in the djungle. Yesterday I met a new friend, his name is Mowgli.
+            int numWords = 21;
+            //Act
+            var sut = new TxtFile(fullpath);
+            //Assert
+            Assert.AreEqual(numWords, sut.WordsUnsorted.Count);
         }
 
         [Test]

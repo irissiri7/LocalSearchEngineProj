@@ -32,15 +32,7 @@ namespace TestProject
 
             Assert.AreEqual(expected, actual);
         }
-        [Test]
-        public void Test_ValidTxtCount()
-        {
-            int count = 21;
-            string dir = Directory.GetCurrentDirectory();
-            var fullpath = Path.Combine(dir, @"ExampleFiles\ValidTxtFile.txt"); //Hi my name is Baloo and I live in the djungle. Yesterday I met a new friend, his name is Mowgli.
-            var actual = new TxtFile(fullpath);
-            Assert.AreEqual(count, actual.WordsUnsorted.Count);
-        }
+        
         [Test]
         public void Test_SortedTextFile()
         {
