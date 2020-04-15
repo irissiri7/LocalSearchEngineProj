@@ -39,7 +39,7 @@ namespace TestProject
         }
 
         [Test]
-        public void CreatingNewTxtObj_MessyTxtFile_ReadsInTheWordsCorrectly()
+        public void CreatingNewTxtObj_GivenMessyTxtFile_ReadsInTheWordsCorrectly()
         {
             // Arrange/Act
              var file = new TxtFile(Path.Combine(Directory.GetCurrentDirectory(), @"ExampleFiles\MessyTxtFile.txt"));
