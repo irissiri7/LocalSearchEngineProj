@@ -48,14 +48,14 @@ namespace TestProject
             Assert.AreEqual(2, file.Search("i"));
         }
 
-        [Test]
-        public void Search_BadInput()
-        {
-            // Arrange
-            var file = new TxtFile(Path.Combine(Environment.CurrentDirectory, @"ExampleFiles\ValidTxtFile.txt"));
-
-            // Assert
-            Assert.Throws<ArgumentException>(() => file.Search("asdas123123%"));
-        }
+//        [Test]
+//        public void Search_BadInput()
+//        {
+//            // Arrange
+//            var file = new TxtFile(Path.Combine(Environment.CurrentDirectory, @"ExampleFiles\ValidTxtFile.txt"));
+//
+//            // Assert
+//            Assert.Throws<ArgumentException>(() => file.Search("asdas123123%"));
+//        }
     }
 }

@@ -34,11 +34,6 @@ namespace ClassLibrary
         // Search Method
         public int Search(string searchWord)
         {
-            var validateSearch = new Regex(@"^[a-zA-ZåäöÅÄÖ]+$");
-            if (!validateSearch.IsMatch(searchWord))
-            {
-                throw new ArgumentException("Invalid Search");
-            }
             return WordsUnsorted.Count(word => word == searchWord);
         }
 
