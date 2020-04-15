@@ -9,7 +9,7 @@ namespace TestProject
     {
 
         [Test]
-        public void GetWords_GivenRegularTxtFile_CleansItUpCorrectly()
+        public void CreatingNewTxtObj_GivenRegularTxtFile_ReadsInTheWordsCorrectly()
         {
             // Arrange/Act
             var file = new TxtFile(Path.Combine(Directory.GetCurrentDirectory(), @"ExampleFiles\ValidTxtFile.txt"));
@@ -39,7 +39,7 @@ namespace TestProject
         }
 
         [Test]
-        public void GetWords_GivenMessyTextFile_CleansItUpCorrectly()
+        public void CreatingNewTxtObj_MessyTxtFile_ReadsInTheWordsCorrectly()
         {
             // Arrange/Act
              var file = new TxtFile(Path.Combine(Directory.GetCurrentDirectory(), @"ExampleFiles\MessyTxtFile.txt"));
@@ -70,7 +70,7 @@ namespace TestProject
         }
 
         [Test]
-        public void GetWords_GivenTextFile_ExtractsRightNumberOfWords()
+        public void CreatingNewTxtObj_GivenRegularTxtFile_ReadsInTheCorrectNumOfWords()
         {
             //Arrange
             var fullpath = Path.Combine(Directory.GetCurrentDirectory(), @"ExampleFiles\ValidTxtFile.txt");
