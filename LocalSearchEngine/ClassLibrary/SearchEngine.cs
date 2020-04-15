@@ -4,6 +4,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 [assembly: InternalsVisibleTo("TestProject")]
 
@@ -216,10 +217,10 @@ namespace ClassLibrary
 
             string input = "";
             bool firstInput = true;
-
-            while (string.IsNullOrEmpty(input))
+            var validateSearch = new Regex(@"[^a-zA-ZåäöÅÄÖ]+");
+            while (string.IsNullOrEmpty(input) || validateSearch.IsMatch(input))
             {
-                Console.WriteLine("Please Enter a" + (firstInput ? "" : "Valid") + " Search Word");
+                Console.WriteLine("Please Enter a " + (firstInput ? "" : "Valid") + " Search Word");
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.Write(">> ");
                 Console.ForegroundColor = ConsoleColor.White;
