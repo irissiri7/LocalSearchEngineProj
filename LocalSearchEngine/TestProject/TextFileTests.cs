@@ -134,14 +134,5 @@ namespace TestProject
             Assert.AreEqual(0, file.Search("kuckeliku"));
         }
 
-        //        [Test]
-        //        public void Search_BadInput()
-        //        {
-        //            // Arrange
-        //            var file = new TxtFile(Path.Combine(Environment.CurrentDirectory, @"ExampleFiles\ValidTxtFile.txt"));
-        //
-        //            // Assert
-        //            Assert.Throws<ArgumentException>(() => file.Search("asdas123123%"));
-        //        }
     }
 }
