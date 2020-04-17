@@ -7,7 +7,6 @@ namespace TestProject
 {
     public class TextFileTests
     {
-        //REGULAR
         [Test]
         public void CreatingNewTxtObj_GivenRegularTxtFile_ReadsInTheWordsCorrectly()
         {
