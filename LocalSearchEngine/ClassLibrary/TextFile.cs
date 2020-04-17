@@ -34,7 +34,15 @@ namespace ClassLibrary
         // Search Method
         public int Search(string searchWord)
         {
-            return WordsUnsorted.Count(word => word == searchWord);
+            int hits = 0;
+            foreach(var word in WordsUnsorted)
+            {
+                if (word == searchWord)
+                {
+                    hits++;
+                }
+            }
+            return hits;
         }
 
         // Saves the file as a <Filepath>_SortedWords.txt
